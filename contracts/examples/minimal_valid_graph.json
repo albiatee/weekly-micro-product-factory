@@ -1,0 +1,53 @@
+{
+  "signals": {
+    "sig_demo_001": {
+      "id": "sig_demo_001",
+      "source": "manual",
+      "raw_text": "Small shops need a simple offline task list",
+      "captured_at": "2026-09-20T10:00:00Z",
+      "created_by": "github:demo"
+    }
+  },
+  "opportunities": {
+    "opp_demo_001": {
+      "id": "opp_demo_001",
+      "status": "hypothesized",
+      "title": "Offline daily tasks for shops",
+      "problem": "Paper lists get lost; complex apps are overkill",
+      "audience": "Small shop owners",
+      "created_by": "github:demo",
+      "created_at": "2026-09-20T10:05:00Z",
+      "updated_at": "2026-09-20T10:05:00Z",
+      "signal_ids": ["sig_demo_001"],
+      "hypothesis": "A one-page offline task list will get signups from shop owners",
+      "solution_type": "digital_micro",
+      "geo": {
+        "primary": "GLOBAL",
+        "region": "GLOBAL",
+        "languages": ["en", "ar"],
+        "rationale": "Problem is language-agnostic for micro tools"
+      }
+    }
+  },
+  "experiments": {
+    "exp_demo_001": {
+      "id": "exp_demo_001",
+      "opportunity_id": "opp_demo_001",
+      "status": "running",
+      "experiment_type": "smoke_page",
+      "hypothesis_test": "Will shop owners click interested on a one-page pitch?",
+      "created_by": "github:demo",
+      "created_at": "2026-09-20T11:00:00Z",
+      "updated_at": "2026-09-20T11:00:00Z",
+      "measurement_plan": "Share link in two communities for 7 days and count CTA clicks and comments",
+      "success_threshold": {
+        "metric": "cta_clicks",
+        "operator": "gte",
+        "value": 10,
+        "window_days": 7
+      }
+    }
+  },
+  "decisions": {},
+  "learnings": {}
+}

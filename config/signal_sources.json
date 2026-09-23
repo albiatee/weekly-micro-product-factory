@@ -1,0 +1,52 @@
+{
+  "feeds": [
+    {
+      "name": "hnrss_ask",
+      "url": "https://hnrss.org/ask",
+      "source": "other"
+    },
+    {
+      "name": "hnrss_q_invoice",
+      "url": "https://hnrss.org/newest?q=invoice",
+      "source": "other"
+    },
+    {
+      "name": "hnrss_show",
+      "url": "https://hnrss.org/show",
+      "source": "other"
+    }
+  ],
+  "disabled_feeds": [
+    {
+      "name": "hnrss_q_freelance",
+      "url": "https://hnrss.org/newest?q=freelance",
+      "source": "other",
+      "reason": "High supply/for-hire noise; not demand signals. Frozen per OPERATING_RULES."
+    },
+    {
+      "name": "hnrss_newest",
+      "url": "https://hnrss.org/newest",
+      "source": "other",
+      "reason": "Firehose exploratory noise. Frozen for default collection."
+    },
+    {
+      "name": "hnrss_frontpage",
+      "url": "https://hnrss.org/frontpage",
+      "source": "other",
+      "reason": "General news/discussion noise. Frozen for default collection."
+    },
+    {
+      "name": "hnrss_q_saas",
+      "url": "https://hnrss.org/newest?q=SaaS",
+      "source": "other",
+      "reason": "Mostly launches/Show HN; optional later, not default demand source."
+    },
+    {
+      "name": "lobsters",
+      "url": "https://lobste.rs/rss",
+      "source": "other",
+      "reason": "Technical discussion; low problem-signal rate in pilot. Optional later."
+    }
+  ],
+  "notes": "OPERATING_RULES: only `feeds` are collected by default. disabled_feeds are frozen (not read by collector). RSS text is observation only — never market proof. Do not run generate_opportunities on unreviewed batches."
+}
