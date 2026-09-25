@@ -10,6 +10,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+import experiment.pipeline as _exp_pipe  # noqa: E402
+
 from decision.pipeline import create_decision  # noqa: E402
 from decision.store import list_decisions  # noqa: E402
 from discovery.pipeline import ingest_manual_payload  # noqa: E402
@@ -53,7 +55,7 @@ def _to_building(env, solution_type: str = "digital_micro"):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "Need a simple offline calculator tool for shops",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_production_bridge-3]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=env["sig"],
@@ -68,7 +70,7 @@ def _to_building(env, solution_type: str = "digital_micro"):
     o["solution_type"] = solution_type
     upsert_opportunity(o, env["opp"])
 
-    er = create_experiment(
+    er = _exp_pipe.create_experiment(
         oid,
         experiment_type="waitlist",
         measurement_plan="signups",
@@ -121,7 +123,7 @@ def test_no_decision_rejected(env):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "orphan building attempt text here",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_production_bridge-4]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=env["sig"],
@@ -152,7 +154,7 @@ def test_iterate_verdict_cannot_build(env):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "iterate path unique signal content",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_production_bridge-5]",
             "captured_at": "2026-09-20T15:00:00Z",
         },
         store_root=env["sig"],
@@ -164,7 +166,7 @@ def test_iterate_verdict_cannot_build(env):
     o = list_opportunities(env["opp"])[oid2]
     o["solution_type"] = "digital_micro"
     upsert_opportunity(o, env["opp"])
-    er = create_experiment(
+    er = _exp_pipe.create_experiment(
         oid2, experiment_type="waitlist", measurement_plan="m",
         opportunities_root=env["opp"], experiments_root=env["exp"],
     )

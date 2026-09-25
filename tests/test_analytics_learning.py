@@ -9,6 +9,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+import experiment.pipeline as _exp_pipe  # noqa: E402
+
 from analytics.metrics import compute_counts  # noqa: E402
 from analytics.pipeline import generate_learning_records, run_analytics  # noqa: E402
 from analytics.store import list_learnings, load_index  # noqa: E402
@@ -55,7 +57,7 @@ def test_counts_and_reproducibility(roots):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "analytics learning signal body",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_analytics_learning-8]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=roots["sig"],
@@ -64,7 +66,7 @@ def test_counts_and_reproducibility(roots):
     oid = generate_from_signal_ids(
         [sid], signals_root=roots["sig"], opportunities_root=roots["opp"]
     ).accepted[0]["opportunity"]["id"]
-    er = create_experiment(
+    er = _exp_pipe.create_experiment(
         oid, experiment_type="waitlist", measurement_plan="m",
         opportunities_root=roots["opp"], experiments_root=roots["exp"],
     )
@@ -115,7 +117,7 @@ def test_learning_record_evidence(roots):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "learning record evidence path",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_analytics_learning-9]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=roots["sig"],
@@ -124,7 +126,7 @@ def test_learning_record_evidence(roots):
     oid = generate_from_signal_ids(
         [sid], signals_root=roots["sig"], opportunities_root=roots["opp"]
     ).accepted[0]["opportunity"]["id"]
-    er = create_experiment(
+    er = _exp_pipe.create_experiment(
         oid, experiment_type="manual_pilot", measurement_plan="notes",
         opportunities_root=roots["opp"], experiments_root=roots["exp"],
     )

@@ -80,8 +80,12 @@ EXPERIMENT_STATUSES = frozenset({"planned", "running", "completed", "aborted"})
 EXPERIMENT_TYPES = frozenset(
     {
         "smoke_page",
+        "landing_page",
         "waitlist",
         "concierge",
+        "concierge_manual",
+        "prototype",
+        "interview",
         "preorder",
         "community_vote",
         "manual_pilot",
@@ -93,3 +97,37 @@ DECIDED_BY = frozenset({"human", "human_with_agent_suggestion"})
 
 # Decision.evidence_refs — only these prefixes in contract v1
 EVIDENCE_PREFIXES = (PREFIX_EXPERIMENT, PREFIX_SIGNAL)
+
+
+# --- Phase 2 Signal Quality (optional fields; backward compatible) ---
+SIGNAL_INTENT_TYPES = frozenset(
+    {
+        "problem",
+        "question",
+        "request",
+        "complaint",
+        "buying_intent",
+        "workaround",
+        "feature_request",
+        "supply",
+        "promotion",
+        "news",
+        "noise",
+        "unknown",
+    }
+)
+DEMAND_SIDE_INTENTS = frozenset(
+    {
+        "problem",
+        "question",
+        "request",
+        "complaint",
+        "buying_intent",
+        "workaround",
+        "feature_request",
+    }
+)
+SUPPLY_SIDE_INTENTS = frozenset({"supply", "promotion", "news", "noise"})
+
+EVIDENCE_STRENGTHS = frozenset({"strong", "medium", "weak", "invalid"})
+QUALIFICATION_STATUSES = frozenset({"qualified", "review", "rejected"})

@@ -12,10 +12,15 @@ sys.path.insert(0, str(ROOT))
 from contracts.validate import validate_experiment  # noqa: E402
 from discovery.pipeline import ingest_manual_payload  # noqa: E402
 from experiment.lifecycle import validate_experiment_transition  # noqa: E402
+_CRIT = dict(
+    success_criteria={"metric": "signups", "min": 1, "window": "test"},
+    failure_criteria={"metric": "signups", "max_below": 1, "window": "test"},
+    target_population="Users who reported the stated problem in source signals",
+)
+
 from experiment.pipeline import (  # noqa: E402
     abort_experiment,
     complete_experiment,
-    create_experiment,
     record_results,
     start_experiment,
 )
@@ -38,7 +43,7 @@ def _seed_opportunity(sig_store, opp_store):
     r = ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "Shop owners need offline task lists",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_experiments-0]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=sig_store,
@@ -49,6 +54,14 @@ def _seed_opportunity(sig_store, opp_store):
     )
     return g.accepted[0]["opportunity"]
 
+
+
+def create_experiment(*args, **kwargs):
+    from experiment import pipeline as _p
+    kwargs.setdefault("success_criteria", _CRIT["success_criteria"])
+    kwargs.setdefault("failure_criteria", _CRIT["failure_criteria"])
+    kwargs.setdefault("target_population", _CRIT["target_population"])
+    return _p.create_experiment(*args, **kwargs)
 
 def test_valid_experiment_create(roots):
     sig, opp, exp = roots

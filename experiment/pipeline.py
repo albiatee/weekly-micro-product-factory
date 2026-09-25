@@ -8,6 +8,8 @@ from typing import Any
 
 from contracts.validate import validate_experiment, validate_opportunity, validate_opportunity_transition
 
+from opportunity.evidence import is_evidence_ready
+from .readiness import assert_mutable, has_recorded_results, is_experiment_ready
 from opportunity.store import list_opportunities, upsert_opportunity
 
 from .build import build_experiment
@@ -41,6 +43,12 @@ def create_experiment(
     hypothesis_test: str | None = None,
     measurement_plan: str | dict[str, Any] | None = None,
     success_threshold: dict[str, Any] | None = None,
+    success_criteria: str | dict[str, Any] | None = None,
+    failure_criteria: str | dict[str, Any] | None = None,
+    target_population: str | None = None,
+    assumptions_tested: list[str] | None = None,
+    duration: str | None = None,
+    observation_window: str | None = None,
     channel: str | None = None,
     created_by: str = "system:experiment_engine",
     opportunities_root: Path | None = None,
@@ -58,6 +66,12 @@ def create_experiment(
             hypothesis_test=hypothesis_test,
             measurement_plan=measurement_plan,
             success_threshold=success_threshold,
+            success_criteria=success_criteria,
+            failure_criteria=failure_criteria,
+            target_population=target_population,
+            assumptions_tested=assumptions_tested,
+            duration=duration,
+            observation_window=observation_window,
             channel=channel,
             created_by=created_by,
         )
@@ -117,6 +131,44 @@ def start_experiment(
             errors=[f"opportunity not found: {exp['opportunity_id']}"],
         )
 
+    # Phase 3: evidence readiness before moving opportunity to experimenting
+    ready, ready_errs = is_evidence_ready(opp)
+    if not ready:
+        return ExpOpResult(
+            False,
+            experiment=exp,
+            opportunity=opp,
+            errors=["opportunity not evidence-ready"] + ready_errs,
+        )
+
+    # Phase 4: experiment readiness (criteria predefined)
+    exp_ready, exp_errs = is_experiment_ready(exp, opp)
+    if not exp_ready:
+        return ExpOpResult(
+            False,
+            experiment=exp,
+            opportunity=opp,
+            errors=["experiment not ready"] + exp_errs,
+        )
+
+    # Phase 4: one active running experiment per opportunity
+    active = [
+        e
+        for e in list_experiments(experiments_root).values()
+        if e.get("opportunity_id") == opp.get("id")
+        and e.get("status") == "running"
+        and e.get("id") != exp.get("id")
+    ]
+    if active:
+        return ExpOpResult(
+            False,
+            experiment=exp,
+            opportunity=opp,
+            errors=[
+                f"opportunity already has active running experiment: {active[0].get('id')}"
+            ],
+        )
+
     # hypothesized → experimenting (or already experimenting)
     if opp.get("status") == "hypothesized":
         tr_opp = validate_opportunity_transition("hypothesized", "experimenting")
@@ -162,10 +214,15 @@ def record_results(
     metrics: dict[str, Any] | None = None,
     qualitative_notes: list[str] | None = None,
     passed: bool | None = None,
+    observations: list[dict[str, Any]] | None = None,
     experiments_root: Path | None = None,
     dry_run: bool = False,
 ) -> ExpOpResult:
-    """Attach results to a running (or planned) experiment — no fabricated metrics."""
+    """Attach results/observations to a running experiment — no fabricated metrics.
+
+    Does NOT decide execute/iterate/kill (Phase 5).
+    Recording results freezes hypothesis/criteria (immutability).
+    """
     exp = get_experiment(experiment_id, experiments_root)
     if not exp:
         return ExpOpResult(False, errors=[f"experiment not found: {experiment_id}"])
@@ -178,19 +235,84 @@ def record_results(
         )
 
     results: dict[str, Any] = dict(exp.get("results") or {})
+    obs_list: list[dict[str, Any]] = list(exp.get("observations") or [])
+    now = _now()
+
     if metrics is not None:
         if not isinstance(metrics, dict):
             return ExpOpResult(False, experiment=exp, errors=["metrics must be an object"])
         results["metrics"] = metrics
+        for k, v in metrics.items():
+            obs_list.append(
+                {
+                    "metric": str(k),
+                    "value": v,
+                    "source": "manual_entry",
+                    "captured_at": now,
+                }
+            )
     if qualitative_notes is not None:
         results["qualitative_notes"] = list(qualitative_notes)
+        for note in qualitative_notes:
+            obs_list.append(
+                {
+                    "metric": "note",
+                    "value": note,
+                    "source": "manual_entry",
+                    "captured_at": now,
+                }
+            )
+    if observations is not None:
+        for o in observations:
+            if not isinstance(o, dict) or "metric" not in o:
+                return ExpOpResult(
+                    False, experiment=exp, errors=["each observation needs metric"]
+                )
+            row = dict(o)
+            row.setdefault("captured_at", now)
+            row.setdefault("source", "manual_entry")
+            obs_list.append(row)
+            results.setdefault("metrics", {})
+            if isinstance(results["metrics"], dict) and "value" in row:
+                results["metrics"][str(row["metric"])] = row["value"]
     if passed is not None:
+        # observational flag only — not a Decision verdict
         results["passed"] = bool(passed)
 
-    if not results:
+    if not results and not obs_list:
         return ExpOpResult(False, experiment=exp, errors=["no results provided"])
 
-    exp = {**exp, "results": results, "updated_at": _now()}
+    exp = {
+        **exp,
+        "results": results,
+        "observations": obs_list,
+        "updated_at": now,
+    }
+    if not dry_run:
+        upsert_experiment(exp, experiments_root)
+    return ExpOpResult(True, experiment=exp)
+
+
+def update_experiment_fields(
+    experiment_id: str,
+    fields: dict[str, Any],
+    *,
+    experiments_root: Path | None = None,
+    dry_run: bool = False,
+) -> ExpOpResult:
+    """Update experiment fields with immutability after results."""
+    exp = get_experiment(experiment_id, experiments_root)
+    if not exp:
+        return ExpOpResult(False, errors=[f"experiment not found: {experiment_id}"])
+    if exp.get("status") in ("completed", "aborted"):
+        return ExpOpResult(False, experiment=exp, errors=["cannot update terminal experiment"])
+    errs = assert_mutable(exp, fields)
+    if errs:
+        return ExpOpResult(False, experiment=exp, errors=errs)
+    exp = {**exp, **fields, "updated_at": _now()}
+    vr = validate_experiment(exp)
+    if not vr.ok:
+        return ExpOpResult(False, experiment=exp, errors=vr.errors)
     if not dry_run:
         upsert_experiment(exp, experiments_root)
     return ExpOpResult(True, experiment=exp)

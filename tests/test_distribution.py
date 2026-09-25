@@ -9,6 +9,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+import experiment.pipeline as _exp_pipe  # noqa: E402
+
 from decision.pipeline import create_decision  # noqa: E402
 from discovery.pipeline import ingest_manual_payload  # noqa: E402
 from discovery.store import list_signals  # noqa: E402
@@ -61,7 +63,7 @@ def _ship(env) -> str:
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "Need offline tool for distribution test case",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_distribution-6]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=env["sig"],
@@ -73,7 +75,7 @@ def _ship(env) -> str:
     o = list_opportunities(env["opp"])[oid]
     o["solution_type"] = "digital_micro"
     upsert_opportunity(o, env["opp"])
-    er = create_experiment(
+    er = _exp_pipe.create_experiment(
         oid, experiment_type="waitlist", measurement_plan="m",
         opportunities_root=env["opp"], experiments_root=env["exp"],
     )
@@ -125,7 +127,7 @@ def test_building_rejected(env):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "building reject case unique text",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_distribution-7]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=env["sig"],

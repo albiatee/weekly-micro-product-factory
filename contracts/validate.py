@@ -9,6 +9,7 @@ from .constants import (
     DECIDED_BY,
     DECISION_VERDICTS,
     EVIDENCE_PREFIXES,
+    EVIDENCE_STRENGTHS,
     EXPERIMENT_STATUSES,
     EXPERIMENT_TYPES,
     OPP_REQUIRES_SIGNALS,
@@ -19,6 +20,8 @@ from .constants import (
     PREFIX_LEARNING,
     PREFIX_OPPORTUNITY,
     PREFIX_SIGNAL,
+    QUALIFICATION_STATUSES,
+    SIGNAL_INTENT_TYPES,
     SIGNAL_SOURCES,
     SOLUTION_TYPES,
 )
@@ -82,6 +85,21 @@ def validate_signal(obj: dict[str, Any]) -> ValidationResult:
     if "created_by" in obj and obj["created_by"] is not None:
         if not isinstance(obj["created_by"], str) or not obj["created_by"].strip():
             _err(errors, "created_by must be a non-empty string when present")
+
+    # Phase 2 optional quality fields — if present must be valid
+    if "intent_type" in obj and obj["intent_type"] is not None:
+        if not isinstance(obj["intent_type"], str) or obj["intent_type"] not in SIGNAL_INTENT_TYPES:
+            _err(errors, f"intent_type must be one of SIGNAL_INTENT_TYPES, got {obj.get('intent_type')!r}")
+    if "evidence_strength" in obj and obj["evidence_strength"] is not None:
+        if not isinstance(obj["evidence_strength"], str) or obj["evidence_strength"] not in EVIDENCE_STRENGTHS:
+            _err(errors, f"evidence_strength must be one of EVIDENCE_STRENGTHS, got {obj.get('evidence_strength')!r}")
+    if "qualification_status" in obj and obj["qualification_status"] is not None:
+        if not isinstance(obj["qualification_status"], str) or obj["qualification_status"] not in QUALIFICATION_STATUSES:
+            _err(errors, f"qualification_status must be one of QUALIFICATION_STATUSES, got {obj.get('qualification_status')!r}")
+    if "confidence" in obj and obj["confidence"] is not None:
+        c = obj["confidence"]
+        if not isinstance(c, (int, float)) or not (0.0 <= float(c) <= 1.0):
+            _err(errors, "confidence must be a number between 0 and 1 when present")
 
     return ValidationResult(ok=len(errors) == 0, errors=errors)
 

@@ -6,6 +6,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any
 
+from .evidence import attach_evidence_layer
 from .score import score_opportunity
 
 
@@ -154,8 +155,8 @@ def build_opportunity_from_signals(
         "geo": geo,
         "score": score,
         "notes": (
-            "Phase 3 generated candidate. Scores are prioritization heuristics only. "
+            "Generated candidate. Scores are prioritization heuristics only. "
             "Do not treat as market validation."
         ),
     }
-    return opp
+    return attach_evidence_layer(opp, signals)

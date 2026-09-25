@@ -6,6 +6,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any
 
+from .quality import apply_quality
 from .sources.base import RawSignalCandidate
 
 
@@ -59,4 +60,6 @@ def candidate_to_signal_dict(candidate: RawSignalCandidate, *, signal_id: str | 
         # provenance only — do not add invented demand metrics
         sig["meta"] = dict(candidate.meta)
 
+    # Phase 2: deterministic quality enrichment (optional fields; backward compatible)
+    sig = apply_quality(sig)
     return sig

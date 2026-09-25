@@ -9,6 +9,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+import experiment.pipeline as _exp_pipe  # noqa: E402
+
 from contracts.validate import validate_decision  # noqa: E402
 from decision.pipeline import create_decision  # noqa: E402
 from decision.store import list_decisions  # noqa: E402
@@ -38,7 +40,7 @@ def _ready_experimenting(sig, opp, exp):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "Need offline checklist for shops",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_decisions-1]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=sig,
@@ -49,7 +51,7 @@ def _ready_experimenting(sig, opp, exp):
     oid = generate_from_signal_ids(
         [sid], signals_root=sig, opportunities_root=opp
     ).accepted[0]["opportunity"]["id"]
-    er = create_experiment(
+    er = _exp_pipe.create_experiment(
         oid,
         experiment_type="waitlist",
         measurement_plan="Count signups over 7 days",
@@ -182,7 +184,7 @@ def test_hypothesized_cannot_decide(roots):
     ingest_manual_payload(
         {
             "source": "manual",
-            "raw_text": "another signal text",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_decisions-2]",
             "captured_at": "2026-09-20T12:00:00Z",
         },
         store_root=sig,

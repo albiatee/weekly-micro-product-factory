@@ -63,3 +63,13 @@ python scripts/collect_web_signals.py --source hnrss_ask --limit 10
 3. ثم hardening (تجربة running واحدة، ذرّية التخزين) عند الحاجة
 
 لا Phase 10 / LLM discovery قبل حل عنق جودة الإشارة.
+
+
+## 6. Signal Quality (Phase 2)
+
+See [`docs/SIGNAL_QUALITY.md`](SIGNAL_QUALITY.md).
+
+- Every ingested Signal is enriched with `intent_type`, `evidence_strength`, `qualification_status`.
+- **Only `qualification_status=qualified`** may generate Opportunities (enforced in opportunity pipeline).
+- `review` / `rejected` remain auditable; they are not market validation failures, they are quality filters.
+- Manual override of quality fields is allowed on ingest when provided explicitly and valid.

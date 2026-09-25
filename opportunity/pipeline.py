@@ -7,6 +7,7 @@ from typing import Any
 
 from contracts.validate import validate_opportunity
 
+from discovery.quality import apply_quality, is_opportunity_eligible
 from discovery.store import list_signals as list_stored_signals
 
 from .dedupe import find_duplicate
@@ -83,8 +84,36 @@ def generate_from_signal_ids(
             )
             continue
 
+        # Phase 2: only qualified demand-side signals may form Opportunities
+        ineligible = []
+        enriched = []
+        for s in found:
+            s2 = apply_quality(dict(s))
+            enriched.append(s2)
+            if not is_opportunity_eligible(s2):
+                ineligible.append(
+                    {
+                        "id": s2.get("id"),
+                        "intent_type": s2.get("intent_type"),
+                        "qualification_status": s2.get("qualification_status"),
+                        "evidence_strength": s2.get("evidence_strength"),
+                    }
+                )
+        if ineligible:
+            result.rejected.append(
+                {
+                    "status": "rejected",
+                    "errors": [
+                        "signal quality gate: not qualified for opportunity generation"
+                    ],
+                    "signal_ids": batch,
+                    "quality": ineligible,
+                }
+            )
+            continue
+
         try:
-            opp = build_opportunity_from_signals(found, created_by=created_by)
+            opp = build_opportunity_from_signals(enriched, created_by=created_by)
         except ValueError as e:
             result.rejected.append({"status": "rejected", "errors": [str(e)], "signal_ids": batch})
             continue

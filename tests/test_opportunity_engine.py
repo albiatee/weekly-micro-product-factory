@@ -26,7 +26,7 @@ def stores(tmp_path: Path):
     return sig, opp
 
 
-def _seed_signal(store: Path, text: str = "Users need a simple offline tool for tasks", **extra):
+def _seed_signal(store: Path, text: str = "Freelancers struggle every week because they cannot match payments and waste hours reconciling invoices manually.", **extra):
     payload = {
         "source": "manual",
         "raw_text": text,
@@ -54,8 +54,8 @@ def test_valid_signal_to_opportunity(stores):
 
 def test_multiple_signals_one_opportunity(stores):
     sig_store, opp_store = stores
-    s1 = _seed_signal(sig_store, "Pain about invoicing for freelancers")
-    s2 = _seed_signal(sig_store, "Also invoicing is too complex offline")
+    s1 = _seed_signal(sig_store, "Freelancers struggle with invoicing every month and cannot find a simple offline tool")
+    s2 = _seed_signal(sig_store, "Invoicing is too complex offline; teams manually use spreadsheets as a workaround")
     result = generate_from_signal_ids(
         [s1["id"], s2["id"]],
         signals_root=sig_store,
