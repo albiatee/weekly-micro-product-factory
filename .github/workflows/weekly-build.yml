@@ -39,18 +39,84 @@ on:
         required: false
         type: string
         default: ''
+      lang:
+        description: 'Factory language (ar or en)'
+        required: false
+        type: choice
+        options:
+          - ar
+          - en
+        default: ar
 
 permissions:
   contents: write
+  issues: write
+  actions: read
 
 jobs:
+  select-idea:
+    name: Select community idea
+    runs-on: ubuntu-latest
+    # On schedule always try; on dispatch only if no explicit idea and enable_ai
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.enable_ai == true && inputs.idea_title == 'منتج تجريبي')
+    outputs:
+      selected: ${{ steps.pick.outputs.selected }}
+      issue_number: ${{ steps.pick.outputs.issue_number }}
+      idea_title: ${{ steps.pick.outputs.idea_title }}
+      idea_description: ${{ steps.pick.outputs.idea_description }}
+      votes: ${{ steps.pick.outputs.votes }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Select highest-voted approved idea
+        id: pick
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python scripts/select_idea.py selected_idea.json
+          python3 << 'PY'
+          import json, os, pathlib
+          d = json.load(open("selected_idea.json", encoding="utf-8"))
+          out = os.environ["GITHUB_OUTPUT"]
+          selected = bool(d.get("selected"))
+          with open(out, "a", encoding="utf-8") as f:
+              f.write(f"selected={str(selected).lower()}\n")
+              if selected:
+                  title = (d.get("idea_title") or "").replace("\n", " ").strip()
+                  desc = (d.get("idea_description") or "").replace("\r", "").strip()
+                  f.write(f"issue_number={d.get('issue_number') or ''}\n")
+                  f.write(f"votes={d.get('votes') or 0}\n")
+                  f.write(f"idea_title={title}\n")
+                  f.write("idea_description<<DESC_EOF\n")
+                  f.write(desc + "\n")
+                  f.write("DESC_EOF\n")
+              else:
+                  f.write("issue_number=\n")
+                  f.write("votes=0\n")
+                  f.write("idea_title=\n")
+                  f.write("idea_description=\n")
+          print(json.dumps(d, ensure_ascii=False, indent=2))
+          PY
+
+
   prepare:
     name: Prepare
+    needs: [select-idea]
+    if: always() && (needs.select-idea.result == 'success' || needs.select-idea.result == 'skipped')
     runs-on: ubuntu-latest
     outputs:
       week_id: ${{ steps.set_week.outputs.week_id }}
       target_path: ${{ steps.set_week.outputs.target_path }}
       template_name: ${{ steps.choose_template.outputs.template_name }}
+      idea_title: ${{ steps.resolve_idea.outputs.idea_title }}
+      idea_description: ${{ steps.resolve_idea.outputs.idea_description }}
+      source_issue_number: ${{ steps.resolve_idea.outputs.source_issue_number }}
+      use_ai: ${{ steps.resolve_idea.outputs.use_ai }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -89,6 +155,51 @@ jobs:
           fi
           echo "OK: target path is free"
 
+
+      - name: Resolve idea source
+        id: resolve_idea
+        run: |
+          INPUT_TITLE="${{ github.event.inputs.idea_title }}"
+          INPUT_DESC="${{ github.event.inputs.idea_description }}"
+          INPUT_ISSUE="${{ github.event.inputs.source_issue_number }}"
+          INPUT_AI="${{ github.event.inputs.enable_ai }}"
+          SEL_TITLE="${{ needs.select-idea.outputs.idea_title }}"
+          SEL_DESC="${{ needs.select-idea.outputs.idea_description }}"
+          SEL_ISSUE="${{ needs.select-idea.outputs.issue_number }}"
+          SEL_OK="${{ needs.select-idea.outputs.selected }}"
+          EVENT="${{ github.event_name }}"
+
+          echo "debug AI=$INPUT_AI title=$INPUT_TITLE event=$EVENT sel=$SEL_OK issue=$SEL_ISSUE"
+
+          # Prefer community-voted idea whenever select-idea selected one
+          if [ "$SEL_OK" = "true" ] || [ "$SEL_OK" = "True" ]; then
+            echo "Community-voted idea #$SEL_ISSUE"
+            echo "idea_title=$SEL_TITLE" >> "$GITHUB_OUTPUT"
+            {
+              echo "idea_description<<EOF"
+              echo "$SEL_DESC"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            echo "source_issue_number=$SEL_ISSUE" >> "$GITHUB_OUTPUT"
+            echo "use_ai=true" >> "$GITHUB_OUTPUT"
+          elif [ "$INPUT_AI" = "true" ]; then
+            echo "Dispatch AI path (manual idea)"
+            echo "idea_title=$INPUT_TITLE" >> "$GITHUB_OUTPUT"
+            {
+              echo "idea_description<<EOF"
+              echo "$INPUT_DESC"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            echo "source_issue_number=$INPUT_ISSUE" >> "$GITHUB_OUTPUT"
+            echo "use_ai=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Deterministic path"
+            echo "idea_title=" >> "$GITHUB_OUTPUT"
+            echo "idea_description=" >> "$GITHUB_OUTPUT"
+            echo "source_issue_number=$INPUT_ISSUE" >> "$GITHUB_OUTPUT"
+            echo "use_ai=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Choose template
         id: choose_template
         run: |
@@ -118,9 +229,10 @@ jobs:
   smart-agents:
     name: Smart Agents
     needs: prepare
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.enable_ai == true }}
+    if: ${{ always() && needs.prepare.result == 'success' && (needs.prepare.outputs.use_ai == 'true' || inputs.enable_ai == true) }}
     runs-on: ubuntu-latest
     env:
+      FACTORY_LANG: ${{ github.event.inputs.lang || vars.FACTORY_LANG || 'ar' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
@@ -142,10 +254,12 @@ jobs:
         id: triage
         run: |
           echo "🔍 Running Triage Agent..."
-          python agents/triage_agent.py \
-            --title "${{ inputs.idea_title }}" \
-            --description "${{ inputs.idea_description }}" \
-            --output triage_result.json
+          TITLE="${{ needs.prepare.outputs.idea_title }}"
+          DESC="${{ needs.prepare.outputs.idea_description }}"
+          ISSUE="${{ needs.prepare.outputs.source_issue_number }}"
+          EXTRA=""
+          if [ -n "$ISSUE" ]; then EXTRA="--issue-number $ISSUE"; fi
+          python agents/triage_agent.py             --title "$TITLE"             --description "$DESC"             --source github_issue             --lang "$FACTORY_LANG"             $EXTRA             --output triage_result.json
           echo "──────── triage_result.json ────────"
           cat triage_result.json
           STATUS=$(python3 -c "import json; print(json.load(open('triage_result.json'))['status'])")
@@ -196,6 +310,50 @@ jobs:
           echo "Design HTML generated"
           wc -c generated_index.html
 
+
+      - name: Adversarial critic + optional redesign
+        run: |
+          echo "Critic reviewing generated HTML..."
+          ATTEMPT=1
+          MAX=2
+          while [ $ATTEMPT -le $MAX ]; do
+            python agents/adversarial_critic_agent.py \
+              --html generated_index.html \
+              --diversity diversity_card.json \
+              --content content.json \
+              --lang "$FACTORY_LANG" \
+              --output critic_report.json
+            echo "--- critic attempt $ATTEMPT ---"
+            cat critic_report.json
+            VERDICT=$(python3 -c "import json; print(json.load(open('critic_report.json')).get('verdict',''))")
+            SCORE=$(python3 -c "import json; print(json.load(open('critic_report.json')).get('score',0))")
+            echo "verdict=$VERDICT score=$SCORE"
+            if [ "$VERDICT" = "approved" ]; then
+              echo "Critic approved"
+              break
+            fi
+            if [ $ATTEMPT -ge $MAX ]; then
+              echo "Max revisions reached — publish with warning"
+              break
+            fi
+            echo "Needs revision — redesign attempt $ATTEMPT"
+            # Feed suggestions into a lightweight redesign pass
+            SUG=$(python3 -c "import json; print(' | '.join(json.load(open('critic_report.json')).get('suggestions') or [])[:500])")
+            python agents/design_agent.py \
+              --diversity diversity_card.json \
+              --content content.json \
+              --templates-dir templates \
+              --output generated_index.html || true
+            ATTEMPT=$((ATTEMPT+1))
+          done
+          python3 -c "
+          import json
+          r=json.load(open('critic_report.json'))
+          open('critic_verdict.txt','w').write(r.get('verdict') or '')
+          open('critic_score.txt','w').write(str(r.get('score') or ''))
+          "
+
+
       - name: Upload agent artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -205,6 +363,7 @@ jobs:
             diversity_card.json
             content.json
             generated_index.html
+            critic_report.json
           retention-days: 14
 
   build:
@@ -217,7 +376,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download AI artifacts
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.enable_ai == true && needs.smart-agents.result == 'success' }}
+        if: ${{ github.event_name == 'workflow_dispatch' && needs.prepare.outputs.use_ai == 'true' && needs.smart-agents.result == 'success' }}
         uses: actions/download-artifact@v4
         with:
           name: agent-outputs-${{ needs.prepare.outputs.week_id }}
@@ -230,7 +389,7 @@ jobs:
           WEEK_ID="${{ needs.prepare.outputs.week_id }}"
           TARGET="${{ needs.prepare.outputs.target_path }}"
           TEMPLATE="${{ needs.prepare.outputs.template_name }}"
-          ENABLE_AI="${{ inputs.enable_ai }}"
+          ENABLE_AI="${{ needs.prepare.outputs.use_ai }}"
 
           echo "Building product for week: $WEEK_ID"
           mkdir -p "$TARGET"
@@ -347,7 +506,7 @@ jobs:
           echo "Validation passed"
 
       - name: Download AI for soft checks
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.enable_ai == true }}
+        if: ${{ github.event_name == 'workflow_dispatch' && needs.prepare.outputs.use_ai == 'true' }}
         continue-on-error: true
         uses: actions/download-artifact@v4
         with:
@@ -355,7 +514,7 @@ jobs:
           path: ai_check
 
       - name: AI soft quality review
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.enable_ai == true }}
+        if: ${{ github.event_name == 'workflow_dispatch' && needs.prepare.outputs.use_ai == 'true' }}
         continue-on-error: true
         run: |
           if [ ! -f ai_check/generated_index.html ]; then
@@ -390,6 +549,44 @@ jobs:
           fi
 
 
+      - name: Diversity analysis
+        if: always() && needs.build.result == 'success'
+        continue-on-error: true
+        run: |
+          echo "Running objective diversity analysis..."
+          # Prefer AI artifact HTML, else template
+          HTML_FILE=""
+          if [ -f ai_check/generated_index.html ]; then
+            HTML_FILE=ai_check/generated_index.html
+          else
+            TEMPLATE="${{ needs.prepare.outputs.template_name }}"
+            HTML_FILE="templates/$TEMPLATE/index.html"
+          fi
+          python3 -c "
+          import json, pathlib, sys
+          sys.path.insert(0, 'agents')
+          from utils.diversity_analyzer import calculate_diversity_score
+          html = pathlib.Path('$HTML_FILE').read_text(encoding='utf-8')
+          catalog = json.loads(pathlib.Path('catalog/index.json').read_text(encoding='utf-8')) if pathlib.Path('catalog/index.json').exists() else {'products': []}
+          meta = {'title': '', 'path': '${{ needs.prepare.outputs.template_name }}'}
+          if pathlib.Path('ai_check/content.json').exists():
+              c = json.loads(pathlib.Path('ai_check/content.json').read_text(encoding='utf-8'))
+              meta['title'] = c.get('title') or ''
+              meta['description'] = c.get('description') or ''
+          result = calculate_diversity_score(html, meta, catalog.get('products') or [])
+          pathlib.Path('diversity_analysis.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(json.dumps(result, ensure_ascii=False, indent=2))
+          score = result.get('diversity_score') or 0
+          if score < 60:
+              print('WARNING: diversity_score below 60')
+          else:
+              print('OK diversity_score', score)
+          "
+          if [ -f diversity_analysis.json ]; then
+            echo "diversity analysis written"
+          fi
+
+
   publish:
     name: Publish
     needs: [prepare, build, validate]
@@ -400,7 +597,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download AI artifacts for publish
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.enable_ai == true }}
+        if: ${{ github.event_name == 'workflow_dispatch' && needs.prepare.outputs.use_ai == 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: agent-outputs-${{ needs.prepare.outputs.week_id }}
@@ -412,7 +609,7 @@ jobs:
           WEEK_ID="${{ needs.prepare.outputs.week_id }}"
           TARGET="${{ needs.prepare.outputs.target_path }}"
           TEMPLATE="${{ needs.prepare.outputs.template_name }}"
-          ENABLE_AI="${{ inputs.enable_ai }}"
+          ENABLE_AI="${{ needs.prepare.outputs.use_ai }}"
           mkdir -p "$TARGET"
           BUILD_METHOD="deterministic"
           TITLE=""
@@ -441,8 +638,9 @@ jobs:
           if [ -z "$TITLE" ]; then TITLE="$TEMPLATE"; fi
           if [ -z "$DESC" ]; then DESC="Weekly micro-product"; fi
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          ISSUE_NO="${{ inputs.source_issue_number }}"
-          export P_TITLE="$TITLE" P_DESC="$DESC" P_WEEK="$WEEK_ID" P_TEMPLATE="$TEMPLATE" P_METHOD="$BUILD_METHOD" P_TS="$TIMESTAMP" P_TARGET="$TARGET" P_ISSUE="$ISSUE_NO"
+          ISSUE_NO="${{ needs.prepare.outputs.source_issue_number }}"
+          if [ -z "$ISSUE_NO" ]; then ISSUE_NO="${{ inputs.source_issue_number }}"; fi
+          export P_TITLE="$TITLE" P_DESC="$DESC" P_WEEK="$WEEK_ID" P_TEMPLATE="$TEMPLATE" P_METHOD="$BUILD_METHOD" P_TS="$TIMESTAMP" P_TARGET="$TARGET" P_ISSUE="$ISSUE_NO" P_LANG="${{ github.event.inputs.lang || vars.FACTORY_LANG || 'ar' }}"
           python3 -c "
           import json, os
           data = {
@@ -453,6 +651,7 @@ jobs:
             'build_method': os.environ['P_METHOD'],
             'generated_at': os.environ['P_TS'],
             'source_issue_number': os.environ.get('P_ISSUE') or None,
+            'lang': os.environ.get('P_LANG') or 'ar',
             'quality_score': None,
             'diversity_score': None,
           }
@@ -462,6 +661,55 @@ jobs:
           echo "Product files ready (method=$BUILD_METHOD)"
           ls -la "$TARGET"
           cat "$TARGET/meta.json"
+
+      - name: Attach critic and diversity scores to meta
+        if: success()
+        continue-on-error: true
+        env:
+          TARGET: ${{ needs.prepare.outputs.target_path }}
+        run: |
+          mkdir -p "$TARGET"
+          if [ -f ai_out/critic_report.json ]; then
+            cp ai_out/critic_report.json "$TARGET/" || true
+          fi
+          python3 << 'PY'
+          import json, os, pathlib
+          target = os.environ["TARGET"]
+          meta_path = pathlib.Path(target) / "meta.json"
+          if not meta_path.exists():
+              raise SystemExit(0)
+          meta = json.loads(meta_path.read_text(encoding="utf-8"))
+          critic_p = pathlib.Path(target) / "critic_report.json"
+          if not critic_p.exists():
+              critic_p = pathlib.Path("ai_out/critic_report.json")
+          if critic_p.exists():
+              critic = json.loads(critic_p.read_text(encoding="utf-8"))
+              meta["critic_score"] = critic.get("score")
+              meta["critic_verdict"] = critic.get("verdict")
+              meta["critic_report"] = {
+                  "score": critic.get("score"),
+                  "verdict": critic.get("verdict"),
+                  "issues": critic.get("issues") or [],
+                  "suggestions": critic.get("suggestions") or [],
+              }
+              if critic.get("verdict") == "needs_revision":
+                  meta["quality_warning"] = "Published after critic requested revision (max attempts reached)"
+          # diversity from local analyze
+          try:
+              import sys
+              sys.path.insert(0, "agents")
+              from utils.diversity_analyzer import calculate_diversity_score
+              html = (pathlib.Path(target) / "index.html").read_text(encoding="utf-8")
+              catalog = json.loads(pathlib.Path("catalog/index.json").read_text(encoding="utf-8")) if pathlib.Path("catalog/index.json").exists() else {"products": []}
+              div = calculate_diversity_score(html, meta, catalog.get("products") or [])
+              meta["diversity_score"] = div.get("diversity_score")
+              meta["diversity_components"] = div.get("components")
+              pathlib.Path(target, "diversity_analysis.json").write_text(json.dumps(div, ensure_ascii=False, indent=2), encoding="utf-8")
+          except Exception as e:
+              meta["diversity_error"] = str(e)
+          meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+          print(json.dumps({k: meta.get(k) for k in ("critic_score","critic_verdict","diversity_score","quality_warning")}, ensure_ascii=False, indent=2))
+          PY
 
       - name: Update catalog
         run: |
@@ -485,6 +733,22 @@ jobs:
 
           catalog["products"] = [p for p in catalog.get("products", []) if p.get("week") != week_id]
 
+          # enrich diversity tags from card if present
+          tags = []
+          card_path = f"{target}/diversity_card.json"
+          if os.path.exists(card_path):
+              try:
+                  card = json.load(open(card_path, encoding="utf-8"))
+                  layout = (card.get("required_layout") or "")[:40]
+                  tone = (card.get("tone_of_voice") or "")[:40]
+                  if layout:
+                      tags.append(layout)
+                  if tone:
+                      tags.append(tone)
+                  for c in (card.get("suggested_palette") or [])[:3]:
+                      tags.append(str(c))
+              except Exception:
+                  pass
           entry = {
               "week": product_meta["week"],
               "title": product_meta["title"],
@@ -494,6 +758,12 @@ jobs:
               "build_method": product_meta.get("build_method", "deterministic"),
               "generated_at": product_meta["generated_at"],
               "source_issue_number": product_meta.get("source_issue_number"),
+              "diversity_tags": tags,
+              "votes": product_meta.get("votes"),
+              "lang": product_meta.get("lang") or "ar",
+              "diversity_score": product_meta.get("diversity_score"),
+              "critic_score": product_meta.get("critic_score"),
+              "critic_verdict": product_meta.get("critic_verdict"),
           }
           catalog["products"].insert(0, entry)
           catalog["total_count"] = len(catalog["products"])
@@ -505,6 +775,27 @@ jobs:
           print("Catalog updated. Total products:", catalog["total_count"])
           PY
 
+
+      - name: Update contributors reputation
+        if: success()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SOURCE_ISSUE: ${{ needs.prepare.outputs.source_issue_number }}
+          WEEK_ID: ${{ needs.prepare.outputs.week_id }}
+          TARGET: ${{ needs.prepare.outputs.target_path }}
+        run: |
+          DIV=""
+          if [ -f "$TARGET/meta.json" ]; then
+            DIV=$(python3 -c "import json; print(json.load(open('$TARGET/meta.json')).get('diversity_score') or '')")
+          fi
+          export DIVERSITY_SCORE="$DIV"
+          # Prefer issue author; fallback empty
+          python3 scripts/update_contributors.py
+          ls -la catalog/contributors.json || true
+
       - name: Commit and push
         run: |
           WEEK_ID="${{ needs.prepare.outputs.week_id }}"
@@ -514,7 +805,7 @@ jobs:
           git config user.name "Micro Product Factory"
           git config user.email "factory@users.noreply.github.com"
 
-          git add "$TARGET" catalog/index.json
+          git add "$TARGET" catalog/index.json catalog/contributors.json
           git status
 
           if git diff --staged --quiet; then
@@ -525,6 +816,36 @@ jobs:
             git push
             echo "Pushed successfully"
           fi
+
+
+
+      - name: Close source issue as produced
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NO="${{ needs.prepare.outputs.source_issue_number }}"
+          WEEK_ID="${{ needs.prepare.outputs.week_id }}"
+          if [ -z "$ISSUE_NO" ]; then
+            echo "No source issue — skip"
+            exit 0
+          fi
+          REPO="${{ github.repository }}"
+          PRODUCT_URL="https://github.com/${REPO}/tree/main/products/weekly/${WEEK_ID}"
+          STATS_URL="https://github.com/${REPO}/tree/main/stats"
+          gh label create produced --color 5319e7 --description "Idea produced by the factory" 2>/dev/null || true
+          python3 -c "
+          import sys, os
+          sys.path.insert(0, 'agents')
+          from utils.i18n import get_text
+          lang = os.environ.get('FACTORY_LANG') or '${{ github.event.inputs.lang || vars.FACTORY_LANG || 'ar' }}'
+          msg = get_text('produce.comment', lang, week='$WEEK_ID', product_url='$PRODUCT_URL', stats_url='$STATS_URL')
+          open('/tmp/produced.md','w',encoding='utf-8').write(msg)
+          "
+          gh issue comment "$ISSUE_NO" --body-file /tmp/produced.md
+          gh issue edit "$ISSUE_NO" --add-label "produced" --remove-label "approved" || true
+          gh issue close "$ISSUE_NO" --reason "completed" || true
+          echo "Closed issue #$ISSUE_NO as produced"
 
       - name: Summary
         run: |
@@ -541,3 +862,41 @@ jobs:
           echo "Product  : https://github.com/${REPO}/tree/${BRANCH}/products/weekly/${WEEK_ID}"
           echo "Page     : https://github.com/${REPO}/blob/${BRANCH}/products/weekly/${WEEK_ID}/index.html"
           echo "========================================"
+
+
+  notify:
+    name: Notify Telegram
+    needs: [prepare, publish]
+    if: ${{ always() && needs.publish.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Send Telegram (optional)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FACTORY_LANG: ${{ github.event.inputs.lang || vars.FACTORY_LANG || 'ar' }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          WEEK_ID: ${{ needs.prepare.outputs.week_id }}
+          META_PATH: products/weekly/${{ needs.prepare.outputs.week_id }}/meta.json
+          PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL || '' }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "Telegram not configured — skip"
+            exit 0
+          fi
+          # resolve contributor from meta/issue if any
+          ISSUE="${{ needs.prepare.outputs.source_issue_number }}"
+          if [ -n "$ISSUE" ]; then
+            USER=$(gh api "repos/${{ github.repository }}/issues/$ISSUE" --jq .user.login 2>/dev/null || true)
+            export CONTRIBUTOR="$USER"
+          fi
+          python3 scripts/notify_telegram.py

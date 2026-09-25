@@ -1,6 +1,213 @@
 {
   "products": [
     {
+      "week": "2026-w56",
+      "title": "قائمة مهامك اليومية",
+      "description": "ابدأ يومك بطاقة إيجابية مع تطبيقنا البسيط الذي يتيح لك إضافة مهامك اليومية وتحديدها كمكتملة، مع إمكانية سحب وإعادة ترتيبها لتناسب أوقاتك. كل ذلك يعمل محليًا دون الحاجة للإنترنت، مما يضمن استمرارية إنتاجيتك أينما كنت. احصل على تحفيز يومي، وحقق أهدافك خطوة بخطوة!",
+      "path": "products/weekly/2026-w56",
+      "template": "calculator",
+      "build_method": "ai_generated",
+      "generated_at": "2026-09-17T19:05:05Z",
+      "source_issue_number": "3",
+      "diversity_tags": [
+        "قائمة مهام يومية عمودية مع شريط تمرير لل",
+        "أسلوب تحفيزي وداعم، مع عبارات تشجيعية وت",
+        "#FF7F50",
+        "#32CD32",
+        "#1E90FF"
+      ],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": 67.1,
+      "critic_score": 8.5,
+      "critic_verdict": "approved"
+    },
+    {
+      "week": "2026-w55",
+      "title": "منتج تجريبي",
+      "description": "وصف قصير للمنتج التجريبي",
+      "path": "products/weekly/2026-w55",
+      "template": "calculator",
+      "build_method": "ai_generated",
+      "generated_at": "2026-09-17T19:02:38Z",
+      "source_issue_number": null,
+      "diversity_tags": [
+        "هيكل متعدد الخطوات مع شريط تقدم، يضم صفح",
+        "أسلوب كتابة غير رسمي ومتحمس، يركز على إث",
+        "#FF6F61",
+        "#6A5ACD",
+        "#2E8B57"
+      ],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": 72.0,
+      "critic_score": 8.5,
+      "critic_verdict": "approved"
+    },
+    {
+      "week": "2026-w54",
+      "title": "حاسبة بسيطة",
+      "description": "حاسبة أساسية للعمليات الأربع تعمل بدون إنترنت",
+      "path": "products/weekly/2026-w54",
+      "template": "calculator",
+      "build_method": "deterministic",
+      "generated_at": "2026-09-17T18:40:18Z",
+      "source_issue_number": null,
+      "diversity_tags": [],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": 73.3,
+      "critic_score": null,
+      "critic_verdict": null
+    },
+    {
+      "week": "2026-w53",
+      "title": "صفحة هبوط بسيطة",
+      "description": "صفحة هبوط خفيفة وسريعة متوافقة مع الهاتف",
+      "path": "products/weekly/2026-w53",
+      "template": "landing-page",
+      "build_method": "deterministic",
+      "generated_at": "2026-09-17T18:19:27Z",
+      "source_issue_number": null,
+      "diversity_tags": [],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": 62.0,
+      "critic_score": null,
+      "critic_verdict": null
+    },
+    {
+      "week": "2026-w52",
+      "title": "متتبع العادات الأسبوعي",
+      "description": "تتبع عادة واحدة على مدار 7 أيام مع حفظ محلي بدون إنترنت",
+      "path": "products/weekly/2026-w52",
+      "template": "weekly-tracker",
+      "build_method": "deterministic",
+      "generated_at": "2026-09-17T18:11:50Z",
+      "source_issue_number": null,
+      "diversity_tags": [],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": 81.7,
+      "critic_score": null,
+      "critic_verdict": null
+    },
+    {
+      "week": "2026-w51",
+      "title": "حاسبة بسيطة",
+      "description": "حاسبة أساسية للعمليات الأربع تعمل بدون إنترنت",
+      "path": "products/weekly/2026-w51",
+      "template": "calculator",
+      "build_method": "deterministic",
+      "generated_at": "2026-09-17T18:09:42Z",
+      "source_issue_number": null,
+      "diversity_tags": [],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": 73.5,
+      "critic_score": null,
+      "critic_verdict": null
+    },
+    {
+      "week": "2026-w50",
+      "title": "بطاقة شكر بسيطة",
+      "description": "صمم بطاقة شكر فريدة في صفحة واحدة، حيث يكتب المستخدم رسالة قصيرة مع اسم المستلم، ويضيف صورة أو رسمة بسحب وإفلات. التصميم هادئ وأنيق يبرز تقديرك، مع شريط ترويسة ثابت، قسم إدخال، زر إرسال، وتذييل بسيط مع روابط اجتماعية. استمتع بلمسة شخصية تُظهر الامتنان بوضوح وتلهم السعادة.",
+      "path": "products/weekly/2026-w50",
+      "template": "landing-page",
+      "build_method": "ai_generated",
+      "generated_at": "2026-09-17T16:51:53Z",
+      "source_issue_number": null,
+      "diversity_tags": [
+        "شريط ترويسة ثابت، قسم إدخال الرسالة مع ح",
+        "ودود ومشجع، مع لغة تقدير وتقدير للمتلقي.",
+        "#FFC0CB",
+        "#FFD700",
+        "#8A2BE2"
+      ],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": 66.5,
+      "critic_score": 4.0,
+      "critic_verdict": "needs_revision"
+    },
+    {
+      "week": "2026-w49",
+      "title": "مؤقت شاي",
+      "description": "استعد لتجربة شاي لا تُنسى مع مؤقت شاي البسيط الذي يضبطك على ثلاث دقائق مثالية! فقط اضغط زر البداية، ودع العد التنازلي يُظهر لك الوقت المتبقي، مع إشعار بصري يثير حماسك عند الانتهاء. لا تحتاج لأزرار إضافية، فقط تركيز كامل على اللحظة. احصل على شاي مثالي، سريع، وممتع—كل ذلك مع تصميم بسيط يركز على الأداء والراحة.",
+      "path": "products/weekly/2026-w49",
+      "template": "weekly-tracker",
+      "build_method": "ai_generated",
+      "generated_at": "2026-09-17T16:49:51Z",
+      "source_issue_number": null,
+      "diversity_tags": [
+        "صفحة واحدة مع عداد متحرك في منتصف الشاشة",
+        "أسلوب تحفيزي ومشجع، يثير الحماس لتجربة ت",
+        "#FF8C00",
+        "#4CAF50",
+        "#2196F3"
+      ],
+      "votes": null,
+      "lang": "ar",
+      "diversity_score": null,
+      "critic_score": null,
+      "critic_verdict": null
+    },
+    {
+      "week": "2026-w48",
+      "title": "قائمة النقود",
+      "description": "صفحة بسيطة تساعدك على تسجيل وإدارة نصائح الزبائن في مقهى صغير بدون اتصال بالإنترنت. كل ما تحتاجه هو إدخال المبالغ في الجدول، وسيحسب الرصيد تلقائياً. يمكنك حفظ البيانات محلياً في المتصفح أو إعادة تعيينها عند الحاجة. سهلة الاستخدام، سريعة، ومصممة خصيصاً لتلبية احتياجاتك اليومية.",
+      "path": "products/weekly/2026-w48",
+      "template": "calculator",
+      "build_method": "ai_generated",
+      "generated_at": "2026-09-17T16:42:30Z",
+      "source_issue_number": null,
+      "diversity_tags": [
+        "صفحة واحدة بدون ترويسة أو تذييل، تتضمن ج",
+        "موجز، ودود، مع توجيه واضح للمتجر، يركز ع",
+        "#FF5733",
+        "#2E86C1",
+        "#28B463"
+      ],
+      "votes": null,
+      "lang": "en"
+    },
+    {
+      "week": "2026-w46",
+      "title": "صفحة هبوط بسيطة",
+      "description": "صفحة هبوط خفيفة وسريعة متوافقة مع الهاتف",
+      "path": "products/weekly/2026-w46",
+      "template": "landing-page",
+      "build_method": "deterministic",
+      "generated_at": "2026-09-17T16:39:15Z",
+      "source_issue_number": null,
+      "diversity_tags": [],
+      "votes": null,
+      "lang": "en"
+    },
+    {
+      "week": "2026-w45",
+      "title": "صفحة هبوط بسيطة",
+      "description": "صفحة هبوط خفيفة وسريعة متوافقة مع الهاتف",
+      "path": "products/weekly/2026-w45",
+      "template": "landing-page",
+      "build_method": "deterministic",
+      "generated_at": "2026-09-17T16:37:31Z",
+      "source_issue_number": null,
+      "diversity_tags": [],
+      "votes": null,
+      "lang": "en"
+    },
+    {
+      "week": "2026-w38-i1",
+      "title": "بطاقة تهنئة عيد الفطر",
+      "description": "بطاقة تهنئة فطرية فاخرة، تتيح لك كتابة اسم المستلم ورسالة دافئة، مع تصميم احتفالي يشرق بألوان الفرح. تُعرض على ورق فخم مع زخارف دقيقة، وتتحكم فيها لوحة تحكم طافية تُبقي التصميم مركزاً. تُزامن النصوص لحظياً، ويمكنك حفظ البطاقة كصورة أو نسخها دون الحاجة للإنترنت. تجربة شخصية ومبهجة تُقدّم أجواءً من الألفة والبهجة.",
+      "path": "products/weekly/2026-w38-i1",
+      "template": "landing-page",
+      "build_method": "ai_generated",
+      "generated_at": "2026-09-17T16:08:19Z",
+      "source_issue_number": "1"
+    },
+    {
       "week": "2026-w38",
       "title": "حاسبة بسيطة",
       "description": "حاسبة أساسية للعمليات الأربع تعمل بدون إنترنت",
@@ -19,6 +226,6 @@
       "generated_at": "2026-09-17T14:17:08Z"
     }
   ],
-  "last_updated": "2026-09-17T14:19:22Z",
-  "total_count": 2
+  "last_updated": "2026-09-17T19:05:05Z",
+  "total_count": 14
 }
