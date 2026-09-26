@@ -128,3 +128,12 @@ See [`docs/PHASE_10_REPORT.md`](PHASE_10_REPORT.md).
 
 - Pilot fixtures are **system validation**, not market validation
 - Synthetic metrics must be labeled; do not treat them as real demand
+
+
+## 13. Hardening (Phase 11)
+
+See [`docs/PHASE_11_REPORT.md`](PHASE_11_REPORT.md).
+
+- Prefer rejecting invalid transitions over silent repair
+- Human gates must remain explicit (Decision, Feedback approve/convert, Distribution publication)
+- Negative-path tests protect gates; do not weaken them for convenience
