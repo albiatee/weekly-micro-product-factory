@@ -31,6 +31,7 @@ def run_analytics(
     decisions_root: Path | None = None,
     signals_root: Path | None = None,
     distribution_root: Path | None = None,
+    production_root: Path | None = None,
     analytics_root: Path | None = None,
     dry_run: bool = False,
 ) -> AnalyticsResult:
@@ -40,6 +41,7 @@ def run_analytics(
         decisions_root=decisions_root,
         signals_root=signals_root,
         distribution_root=distribution_root,
+        production_root=production_root,
         opportunity_id=opportunity_id,
     )
     if not dry_run:
@@ -83,6 +85,13 @@ def generate_learning_records(
         if lr.get("decision_id") and lr["decision_id"] not in decisions:
             errors.append(f"invalid decision_id on learning for {oid}")
             continue
+        # Idempotent: one LearningRecord per opportunity_id
+        existing = list_learnings(analytics_root)
+        for prev in existing.values():
+            if prev.get("opportunity_id") == oid:
+                lr["id"] = prev["id"]
+                lr["created_at"] = prev.get("created_at") or lr.get("created_at")
+                break
         learnings.append(lr)
         if not dry_run:
             upsert_learning(lr, analytics_root)

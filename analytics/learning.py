@@ -123,6 +123,27 @@ def build_learning_for_opportunity(
     if commercial_notes:
         lr["commercial_notes"] = " ".join(commercial_notes)
 
+    # Phase 8 explicit separation (optional fields; contract still uses what_worked/what_failed)
+    lr["observation"] = failed_s if what_failed else worked_s
+    lr["interpretation"] = (
+        "Summary of operator-recorded experiment/decision/distribution evidence only; "
+        "not causal market proof."
+    )
+    lr["learning"] = lr["interpretation"]
+    lr["confidence"] = "low"
+    lr["source_type"] = "opportunity_lifecycle"
+    lr["source_ids"] = [x for x in [oid, exp_id, dec_id] if x]
+    lr["assumptions"] = [
+        "Operator metrics and notes are accurate as stored",
+        "Absence of evidence is not proof of absence of demand",
+    ]
+    lr["unknowns"] = [
+        "True market demand",
+        "Causal effect of channel choice",
+        "Willingness to pay unless explicitly evidenced",
+    ]
+    lr["updated_at"] = lr["created_at"]
+
     vr = validate_learning_record(lr)
     if not vr.ok:
         return None

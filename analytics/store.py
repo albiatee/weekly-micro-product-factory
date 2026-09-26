@@ -35,9 +35,15 @@ def save_index(data: dict[str, Any], root: Path | None = None) -> Path:
 
 
 def append_snapshot(snapshot: dict[str, Any], root: Path | None = None) -> Path:
+    """Persist snapshot. Idempotent for same filter: replace prior matching filter entry."""
     data = load_index(root)
-    # store without wall-clock for reproducibility of *metrics*; keep generated_at on object
-    data["snapshots"].append(snapshot)
+    filt = snapshot.get("filter") or {}
+    snaps = list(data.get("snapshots") or [])
+    # drop previous snapshots with same opportunity_id filter (keep history length bounded)
+    snaps = [s for s in snaps if (s.get("filter") or {}) != filt]
+    snaps.append(snapshot)
+    data["snapshots"] = snaps
+    data["latest_snapshot"] = snapshot
     return save_index(data, root)
 
 

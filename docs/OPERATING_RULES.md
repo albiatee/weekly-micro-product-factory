@@ -102,3 +102,12 @@ See [`docs/DISTRIBUTION.md`](DISTRIBUTION.md).
 - Only from a **ready** Production Spec linked to **execute**
 - Creating a plan does **not** mean the product was published externally
 - No network publishing in this phase
+
+
+## 10. Analytics & Learning (Phase 8)
+
+See [`docs/ANALYTICS_LEARNING.md`](ANALYTICS_LEARNING.md).
+
+- Analytics/Learning are **observational** only
+- They must **not** change lifecycle status or create Opportunities/Decisions
+- Closed-loop discovery feedback is **Phase 9**
