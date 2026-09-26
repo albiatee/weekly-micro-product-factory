@@ -111,3 +111,12 @@ See [`docs/ANALYTICS_LEARNING.md`](ANALYTICS_LEARNING.md).
 - Analytics/Learning are **observational** only
 - They must **not** change lifecycle status or create Opportunities/Decisions
 - Closed-loop discovery feedback is **Phase 9**
+
+
+## 11. Closed Loop (Phase 9)
+
+See [`docs/CLOSED_LOOP.md`](CLOSED_LOOP.md).
+
+- Learning → Discovery Feedback is a **hint**, not a Signal
+- Human approval required; then **explicit** convert-to-signal
+- New Signals still pass Phase 2 quality; no auto Opportunity

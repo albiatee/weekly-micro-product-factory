@@ -1,10 +1,10 @@
-"""Validate Discovery Hints."""
+"""Validate Discovery Feedback / Hints."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any
 
-from .constants import HINT_STATUSES, HINT_TRANSITIONS
+from .constants import FEEDBACK_TYPES, HINT_STATUSES, HINT_TRANSITIONS
 
 
 @dataclass
@@ -36,6 +36,8 @@ def validate_hint(obj: dict[str, Any]) -> VResult:
         errors.append("source_learning_id must start with lr_")
     if obj.get("status") and obj["status"] not in HINT_STATUSES:
         errors.append(f"invalid status: {obj.get('status')!r}")
+    if obj.get("feedback_type") and obj["feedback_type"] not in FEEDBACK_TYPES:
+        errors.append(f"invalid feedback_type: {obj.get('feedback_type')!r}")
     return VResult(ok=len(errors) == 0, errors=errors)
 
 
