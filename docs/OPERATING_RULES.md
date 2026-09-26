@@ -83,3 +83,12 @@ See [`docs/DECISION_GATE.md`](DECISION_GATE.md).
 - Decision requires a **completed** Experiment, predefined criteria snapshot, and human rationale
 - `execute` / `iterate` / `kill` are recorded outcomes — not automatic market truth
 - Execute does **not** deploy a product; Iterate does **not** auto-start the next experiment
+
+
+## 8. Production Bridge (Phase 6)
+
+See [`docs/PRODUCTION_BRIDGE.md`](PRODUCTION_BRIDGE.md).
+
+- Decision ≠ Production Specification ≠ Deployment ≠ Distribution
+- Only **`execute`** creates a Production Spec; **`iterate`/`kill`** do not
+- Spec status `ready` means authorized to plan/build later — not that a product was deployed
