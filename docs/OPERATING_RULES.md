@@ -92,3 +92,13 @@ See [`docs/PRODUCTION_BRIDGE.md`](PRODUCTION_BRIDGE.md).
 - Decision ≠ Production Specification ≠ Deployment ≠ Distribution
 - Only **`execute`** creates a Production Spec; **`iterate`/`kill`** do not
 - Spec status `ready` means authorized to plan/build later — not that a product was deployed
+
+
+## 9. Distribution (Phase 7)
+
+See [`docs/DISTRIBUTION.md`](DISTRIBUTION.md).
+
+- Production Specification ≠ Distribution ≠ Publication
+- Only from a **ready** Production Spec linked to **execute**
+- Creating a plan does **not** mean the product was published externally
+- No network publishing in this phase

@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from distribution.from_spec import create_distribution_from_spec, prepare_distribution, record_publication  # noqa: E402
 from distribution.pipeline import (  # noqa: E402
     cancel_plan,
     complete_plan,
@@ -42,7 +43,30 @@ def main() -> int:
     c.add_argument("--created-by", default="system:distribution")
     c.add_argument("--skip-artifact-check", action="store_true")
 
-    for name in ("start", "pause", "complete", "cancel"):
+    
+    fs = sub.add_parser("create-from-spec", help="Plan distribution from Production Spec (Phase 7)")
+    fs.add_argument("--production-spec-id", required=True)
+    fs.add_argument("--channel", required=True)
+    fs.add_argument("--distribution-type", default="plan")
+    fs.add_argument("--audience", default=None)
+    fs.add_argument("--message", default=None)
+    fs.add_argument("--destination-url", default=None)
+    fs.add_argument("--objective", default=None)
+    fs.add_argument("--production-dir", default=None)
+    fs.add_argument("--decisions-dir", default=None)
+    fs.add_argument("--experiments-dir", default=None)
+
+    prep = sub.add_parser("prepare", help="planned → prepared (not published)")
+    prep.add_argument("--plan-id", required=True)
+    prep.add_argument("--message", default=None)
+
+    pub = sub.add_parser("record-publication", help="Operator records publish success/failure (no network)")
+    pub.add_argument("--plan-id", required=True)
+    pub.add_argument("--success", choices=["true", "false"], required=True)
+    pub.add_argument("--destination-url", default=None)
+    pub.add_argument("--notes", default=None)
+
+for name in ("start", "pause", "complete", "cancel"):
         s = sub.add_parser(name)
         s.add_argument("--plan-id", required=True)
 
@@ -72,6 +96,43 @@ def main() -> int:
             )
         )
         return 0
+
+    
+    if args.cmd == "create-from-spec":
+        res = create_distribution_from_spec(
+            args.production_spec_id,
+            channel=args.channel,
+            distribution_type=args.distribution_type,
+            audience=args.audience,
+            message=args.message,
+            destination_url=args.destination_url,
+            objective=args.objective,
+            production_root=Path(args.production_dir) if args.production_dir else None,
+            decisions_root=Path(args.decisions_dir) if args.decisions_dir else None,
+            opportunities_root=opp_r,
+            experiments_root=Path(args.experiments_dir) if args.experiments_dir else None,
+            distribution_root=dist_r,
+            dry_run=args.dry_run,
+        )
+        print(json.dumps(res, ensure_ascii=False, indent=2))
+        return 0 if res["ok"] else 1
+    if args.cmd == "prepare":
+        res = prepare_distribution(
+            args.plan_id, message=args.message, distribution_root=dist_r, dry_run=args.dry_run
+        )
+        print(json.dumps(res, ensure_ascii=False, indent=2))
+        return 0 if res["ok"] else 1
+    if args.cmd == "record-publication":
+        res = record_publication(
+            args.plan_id,
+            success=args.success == "true",
+            destination_url=args.destination_url,
+            notes=args.notes,
+            distribution_root=dist_r,
+            dry_run=args.dry_run,
+        )
+        print(json.dumps(res, ensure_ascii=False, indent=2))
+        return 0 if res["ok"] else 1
 
     if args.cmd == "create":
         res = create_plan(
