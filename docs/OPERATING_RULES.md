@@ -73,3 +73,13 @@ See [`docs/SIGNAL_QUALITY.md`](SIGNAL_QUALITY.md).
 - **Only `qualification_status=qualified`** may generate Opportunities (enforced in opportunity pipeline).
 - `review` / `rejected` remain auditable; they are not market validation failures, they are quality filters.
 - Manual override of quality fields is allowed on ingest when provided explicitly and valid.
+
+
+## 7. Decision Gate (Phase 5)
+
+See [`docs/DECISION_GATE.md`](DECISION_GATE.md).
+
+- Signal quality ≠ Opportunity evidence ≠ Experiment results ≠ **Decision**
+- Decision requires a **completed** Experiment, predefined criteria snapshot, and human rationale
+- `execute` / `iterate` / `kill` are recorded outcomes — not automatic market truth
+- Execute does **not** deploy a product; Iterate does **not** auto-start the next experiment

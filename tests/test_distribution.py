@@ -86,7 +86,7 @@ def _ship(env) -> str:
     assert create_decision(
         opportunity_id=oid,
         verdict="execute",
-        reason="ship path",
+        reason="Execute after completed experiment met predefined success path for shipping",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,

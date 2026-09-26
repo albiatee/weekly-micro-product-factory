@@ -77,7 +77,7 @@ def test_counts_and_reproducibility(roots):
     create_decision(
         opportunity_id=oid,
         verdict="iterate",
-        reason="need more evidence",
+        reason="Need more evidence against success criteria; iterate on the offer",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,
@@ -139,7 +139,7 @@ def test_learning_record_evidence(roots):
     create_decision(
         opportunity_id=oid,
         verdict="kill",
-        reason="explicit kill after pilot",
+        reason="Explicit kill after pilot; failure criteria met for engagement",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,

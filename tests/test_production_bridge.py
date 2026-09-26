@@ -177,7 +177,7 @@ def test_iterate_verdict_cannot_build(env):
     dres = create_decision(
         opportunity_id=oid2,
         verdict="iterate",
-        reason="need more tests",
+        reason="Iterate: need more tests before production; evidence is mixed",
         evidence_refs=[eid2],
         decided_by="human",
         experiment_id=eid2,

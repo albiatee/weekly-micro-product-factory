@@ -39,7 +39,8 @@ def main() -> int:
         default=[],
         help="exp_... or sig_... (repeatable)",
     )
-    c.add_argument("--experiment-id", default=None)
+    c.add_argument("--experiment-id", required=True)
+    c.add_argument("--next-action", default=None)
     c.add_argument(
         "--decided-by",
         required=True,
@@ -48,6 +49,8 @@ def main() -> int:
     c.add_argument("--agent-suggestion", default=None)
 
     sub.add_parser("list")
+    ins = sub.add_parser("inspect")
+    ins.add_argument("--decision-id", required=True)
 
     args = p.parse_args()
     opp_r = Path(args.opportunities_dir) if args.opportunities_dir else None
@@ -58,6 +61,10 @@ def main() -> int:
     if args.cmd == "list":
         print(json.dumps(list_decisions(dec_r), ensure_ascii=False, indent=2))
         return 0
+    if args.cmd == "inspect":
+        all_d = list_decisions(dec_r)
+        print(json.dumps(all_d.get(args.decision_id), ensure_ascii=False, indent=2))
+        return 0 if args.decision_id in all_d else 1
 
     if args.cmd == "create":
         refs = list(args.evidence_refs or [])
@@ -70,6 +77,7 @@ def main() -> int:
             evidence_refs=refs,
             decided_by=args.decided_by,
             experiment_id=args.experiment_id,
+            next_action=args.next_action,
             agent_suggestion=args.agent_suggestion,
             opportunities_root=opp_r,
             experiments_root=exp_r,

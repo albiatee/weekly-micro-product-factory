@@ -96,7 +96,7 @@ def test_iterate_and_kill(roots):
     res = create_decision(
         opportunity_id=oid,
         verdict="iterate",
-        reason="Results too weak; revise hypothesis",
+        reason="Results too weak versus success criteria; revise hypothesis and re-test",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,
@@ -216,7 +216,7 @@ def test_duplicate_decision_refused(roots):
     r1 = create_decision(
         opportunity_id=oid,
         verdict="iterate",
-        reason="first decision",
+        reason="First decision with adequate rationale for duplicate-guard test",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,
@@ -229,7 +229,7 @@ def test_duplicate_decision_refused(roots):
     r2 = create_decision(
         opportunity_id=oid,
         verdict="execute",
-        reason="second",
+        reason="Second decision attempt should be rejected as duplicate for this opportunity",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,
@@ -269,7 +269,7 @@ def test_dry_run_no_persist(roots):
     res = create_decision(
         opportunity_id=oid,
         verdict="execute",
-        reason="dry",
+        reason="Dry-run decision with sufficient rationale for validation path",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,
@@ -303,3 +303,104 @@ def test_no_auto_from_passed_alone(roots):
     )
     assert res.ok
     assert res.opportunity["status"] == "killed"
+
+
+def test_criteria_snapshot_preserved(roots):
+    sig, opp, exp, dec = roots
+    oid, eid = _ready_experimenting(sig, opp, exp)
+    res = create_decision(
+        opportunity_id=oid,
+        verdict="iterate",
+        reason="Signups below success criterion; iterate on messaging and re-test waitlist.",
+        evidence_refs=[eid],
+        decided_by="human",
+        experiment_id=eid,
+        opportunities_root=opp,
+        experiments_root=exp,
+        signals_root=sig,
+        decisions_root=dec,
+    )
+    assert res.ok, res.errors
+    snap = res.decision["criteria_snapshot"]
+    assert snap.get("measurement_plan")
+    assert snap.get("success_criteria") is not None or snap.get("success_threshold") is not None
+    assert snap.get("failure_criteria") is not None
+    assert res.decision["metrics_snapshot"]["results"]
+    assert res.decision["next_action"]
+    assert res.decision["experiment_id"] == eid
+
+
+def test_running_experiment_cannot_decide(roots):
+    sig, opp, exp, dec = roots
+    ingest_manual_payload(
+        {
+            "source": "manual",
+            "raw_text": "Shop owners struggle every week because they waste hours reconciling invoices manually without a simple offline tool. [test_decisions-running]",
+            "captured_at": "2026-09-20T12:00:00Z",
+        },
+        store_root=sig,
+    )
+    from discovery.store import list_signals
+
+    sid = list(list_signals(sig).keys())[0]
+    oid = generate_from_signal_ids(
+        [sid], signals_root=sig, opportunities_root=opp
+    ).accepted[0]["opportunity"]["id"]
+    er = _exp_pipe.create_experiment(
+        oid,
+        experiment_type="waitlist",
+        measurement_plan="Count signups",
+        opportunities_root=opp,
+        experiments_root=exp,
+    )
+    eid = er.experiment["id"]
+    assert start_experiment(eid, opportunities_root=opp, experiments_root=exp).ok
+    res = create_decision(
+        opportunity_id=oid,
+        verdict="execute",
+        reason="Attempting decision while experiment is still running is invalid",
+        evidence_refs=[eid],
+        decided_by="human",
+        experiment_id=eid,
+        opportunities_root=opp,
+        experiments_root=exp,
+        signals_root=sig,
+        decisions_root=dec,
+    )
+    assert not res.ok
+
+
+def test_missing_experiment_id_rejected(roots):
+    sig, opp, exp, dec = roots
+    oid, eid = _ready_experimenting(sig, opp, exp)
+    res = create_decision(
+        opportunity_id=oid,
+        verdict="kill",
+        reason="Missing experiment id should fail even with evidence ref present",
+        evidence_refs=[eid],
+        decided_by="human",
+        experiment_id=None,
+        opportunities_root=opp,
+        experiments_root=exp,
+        signals_root=sig,
+        decisions_root=dec,
+    )
+    assert not res.ok
+
+
+def test_short_rationale_rejected(roots):
+    sig, opp, exp, dec = roots
+    oid, eid = _ready_experimenting(sig, opp, exp)
+    res = create_decision(
+        opportunity_id=oid,
+        verdict="kill",
+        reason="too short",
+        evidence_refs=[eid],
+        decided_by="human",
+        experiment_id=eid,
+        opportunities_root=opp,
+        experiments_root=exp,
+        signals_root=sig,
+        decisions_root=dec,
+    )
+    assert not res.ok

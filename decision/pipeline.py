@@ -1,4 +1,8 @@
-"""Decision Gate pipeline — explicit human (or human+suggestion) verdicts only."""
+"""Decision Gate pipeline — explicit human (or human+suggestion) verdicts only.
+
+Phase 5: convert completed Experiment evidence into an auditable Decision.
+Does NOT auto-derive verdict from metrics. Does NOT run production (Phase 6).
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -19,6 +23,8 @@ from opportunity.store import list_opportunities, upsert_opportunity
 from .build import build_decision
 from .store import list_decisions, upsert_decision
 
+MIN_RATIONALE_LEN = 20
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -38,7 +44,6 @@ VERDICT_TO_STATUS = {
     "kill": "killed",
 }
 
-# States from which a final Decision is allowed
 ALLOWED_OPP_STATUSES = frozenset({"experimenting"})
 
 
@@ -79,9 +84,8 @@ def _validate_evidence(
         elif exp.get("status") != "completed":
             errors.append(
                 f"experiment {experiment_id} status is {exp.get('status')!r}; "
-                f"Decision requires completed experiment by default"
+                f"Decision requires completed experiment"
             )
-        # ensure experiment is in evidence_refs if provided
         if experiment_id not in evidence_refs:
             errors.append("experiment_id must also appear in evidence_refs")
 
@@ -96,6 +100,7 @@ def create_decision(
     evidence_refs: list[str],
     decided_by: str,
     experiment_id: str | None = None,
+    next_action: str | None = None,
     agent_suggestion: str | None = None,
     opportunities_root: Path | None = None,
     experiments_root: Path | None = None,
@@ -105,8 +110,9 @@ def create_decision(
 ) -> DecisionResult:
     """Create Decision and advance Opportunity: experimenting → decided → outcome.
 
+    Requires a completed Experiment. Snapshots predefined criteria from that experiment.
     Does NOT auto-derive verdict from experiment.passed or scores.
-    Does NOT trigger production builds.
+    Does NOT trigger production builds (Phase 6).
     """
     opps = list_opportunities(opportunities_root)
     opp = opps.get(opportunity_id)
@@ -123,6 +129,39 @@ def create_decision(
             ],
         )
 
+    if not (reason or "").strip() or len((reason or "").strip()) < MIN_RATIONALE_LEN:
+        return DecisionResult(
+            False,
+            opportunity=opp,
+            errors=[
+                f"rationale/reason required (min {MIN_RATIONALE_LEN} chars); "
+                "explain evidence vs predefined criteria"
+            ],
+        )
+
+    if not experiment_id:
+        return DecisionResult(
+            False,
+            opportunity=opp,
+            errors=["experiment_id is required; Decision must evaluate a specific completed Experiment"],
+        )
+
+    experiments = list_experiments(experiments_root)
+    signals = list_signals(signals_root)
+    decisions = list_decisions(decisions_root)
+
+    # One finalized Decision per Experiment
+    for existing in decisions.values():
+        if existing.get("experiment_id") == experiment_id:
+            return DecisionResult(
+                False,
+                opportunity=opp,
+                errors=[
+                    f"experiment {experiment_id} already has decision {existing.get('id')}; "
+                    "refusing overwrite — run a new experiment for a new evidence cycle"
+                ],
+            )
+
     if opp.get("latest_decision_id"):
         return DecisionResult(
             False,
@@ -133,11 +172,12 @@ def create_decision(
             ],
         )
 
-    experiments = list_experiments(experiments_root)
-    signals = list_signals(signals_root)
+    refs = list(evidence_refs or [])
+    if experiment_id not in refs:
+        refs.append(experiment_id)
 
     evid_errors = _validate_evidence(
-        list(evidence_refs or []),
+        refs,
         opportunity_id=opportunity_id,
         experiment_id=experiment_id,
         experiments=experiments,
@@ -146,50 +186,69 @@ def create_decision(
     if evid_errors:
         return DecisionResult(False, opportunity=opp, errors=evid_errors)
 
-    # Require at least one completed experiment in evidence for normal path
-    has_completed_exp = False
-    for ref in evidence_refs or []:
-        if ref.startswith("exp_"):
-            e = experiments.get(ref)
-            if e and e.get("status") == "completed" and e.get("opportunity_id") == opportunity_id:
-                has_completed_exp = True
-                break
-    if experiment_id:
-        e = experiments.get(experiment_id)
-        if e and e.get("status") == "completed":
-            has_completed_exp = True
-    if not has_completed_exp:
+    exp = experiments[experiment_id]
+    if exp.get("status") != "completed":
         return DecisionResult(
             False,
             opportunity=opp,
             errors=[
-                "Decision requires at least one completed Experiment for this opportunity "
-                "in evidence_refs (aborted/running experiments are not sufficient)"
+                f"Decision requires completed Experiment; got status={exp.get('status')!r}"
+            ],
+        )
+    if not exp.get("results") and not exp.get("observations"):
+        return DecisionResult(
+            False,
+            opportunity=opp,
+            errors=["completed experiment has no results/observations to evaluate"],
+        )
+
+    # Predefined criteria must still be present (immutability from Phase 4)
+    if not exp.get("measurement_plan"):
+        return DecisionResult(
+            False,
+            opportunity=opp,
+            errors=["experiment missing measurement_plan in criteria snapshot source"],
+        )
+    has_success = exp.get("success_criteria") is not None or exp.get("success_threshold") is not None
+    has_failure = exp.get("failure_criteria") is not None
+    if not has_success or not has_failure:
+        return DecisionResult(
+            False,
+            opportunity=opp,
+            errors=[
+                "experiment missing success_criteria and/or failure_criteria; "
+                "cannot decide without predefined criteria"
             ],
         )
 
-    dec = build_decision(
-        opportunity_id=opportunity_id,
-        verdict=verdict,
-        reason=reason,
-        evidence_refs=evidence_refs,
-        decided_by=decided_by,
-        experiment_id=experiment_id,
-        agent_suggestion=agent_suggestion,
-    )
+    try:
+        dec = build_decision(
+            opportunity_id=opportunity_id,
+            verdict=verdict,
+            reason=reason,
+            evidence_refs=refs,
+            decided_by=decided_by,
+            experiment_id=experiment_id,
+            experiment=exp,
+            next_action=next_action,
+            agent_suggestion=agent_suggestion,
+        )
+    except ValueError as e:
+        return DecisionResult(False, opportunity=opp, errors=[str(e)])
 
     vr = validate_decision(dec)
     if not vr.ok:
         return DecisionResult(False, decision=dec, opportunity=opp, errors=vr.errors)
 
-    # Step 1: experimenting → decided
     tr1 = validate_opportunity_transition(opp["status"], "decided")
     if not tr1.ok:
         return DecisionResult(False, decision=dec, opportunity=opp, errors=tr1.errors)
 
     outcome = VERDICT_TO_STATUS.get(verdict)
     if not outcome:
-        return DecisionResult(False, decision=dec, opportunity=opp, errors=[f"unknown verdict: {verdict}"])
+        return DecisionResult(
+            False, decision=dec, opportunity=opp, errors=[f"unknown verdict: {verdict}"]
+        )
 
     tr2 = validate_opportunity_transition("decided", outcome)
     if not tr2.ok:
@@ -197,13 +256,10 @@ def create_decision(
 
     opp_updated = {
         **opp,
-        "status": outcome,  # final after decided hop (persisted as outcome; decided is transitional)
+        "status": outcome,
         "latest_decision_id": dec["id"],
         "updated_at": _now(),
     }
-    # Note: we persist final outcome status; latest_decision_id records the Decision.
-    # The contract path experimented→decided→outcome is validated above even if storage
-    # holds the terminal state after the gate.
 
     vr_opp = validate_opportunity(opp_updated)
     if not vr_opp.ok:

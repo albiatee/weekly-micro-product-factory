@@ -71,7 +71,7 @@ def _learning(roots) -> str:
     create_decision(
         opportunity_id=oid,
         verdict="iterate",
-        reason="learn more",
+        reason="Iterate to learn more from a follow-up experiment on the same problem",
         evidence_refs=[eid],
         decided_by="human",
         experiment_id=eid,
