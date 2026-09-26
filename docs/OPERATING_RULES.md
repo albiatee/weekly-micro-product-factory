@@ -120,3 +120,11 @@ See [`docs/CLOSED_LOOP.md`](CLOSED_LOOP.md).
 - Learning → Discovery Feedback is a **hint**, not a Signal
 - Human approval required; then **explicit** convert-to-signal
 - New Signals still pass Phase 2 quality; no auto Opportunity
+
+
+## 12. E2E Pilot (Phase 10)
+
+See [`docs/PHASE_10_REPORT.md`](PHASE_10_REPORT.md).
+
+- Pilot fixtures are **system validation**, not market validation
+- Synthetic metrics must be labeled; do not treat them as real demand
