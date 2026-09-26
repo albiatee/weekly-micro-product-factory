@@ -137,3 +137,37 @@ See [`docs/PHASE_11_REPORT.md`](PHASE_11_REPORT.md).
 - Prefer rejecting invalid transitions over silent repair
 - Human gates must remain explicit (Decision, Feedback approve/convert, Distribution publication)
 - Negative-path tests protect gates; do not weaken them for convenience
+
+
+## 14. Control Plane (P0 — design lock only)
+
+See:
+
+- [`docs/AUTONOMOUS_POLICY_V0.md`](AUTONOMOUS_POLICY_V0.md) — Policy = authorization
+- [`docs/ORCHESTRATOR_CONTRACT_V0.md`](ORCHESTRATOR_CONTRACT_V0.md) — Orchestrator = what/when
+
+**Layering (authority order):**
+
+1. System Kill Switch (`ORCHESTRATOR_ENABLED`)
+2. Hard Guardrails
+3. Policy evaluation
+4. Orchestrator sequencing
+5. LLM / agents (suggestion only — never authorization)
+
+**P0 does not:**
+
+- implement Orchestrator or Scheduler
+- enable autonomous mode in production
+- remove human gates from legacy mode
+- publish or run live autonomous cycles
+
+Autonomy begins only in a later phase after explicit activation + whitelist/guardrail config.
+
+
+## 15. Orchestrator P1 (dry-run control plane)
+
+See [`docs/P1_ORCHESTRATOR.md`](P1_ORCHESTRATOR.md).
+
+- Default: `orchestrator_enabled=false` and CLI `--dry-run`
+- Policy authorizes; Guardrails block side effects; Orchestrator only sequences
+- Do not set `ORCHESTRATOR_ENABLED=true` until whitelist and budgets are reviewed

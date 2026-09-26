@@ -93,7 +93,11 @@ EXPERIMENT_TYPES = frozenset(
 )
 
 DECISION_VERDICTS = frozenset({"execute", "iterate", "kill"})
-DECIDED_BY = frozenset({"human", "human_with_agent_suggestion"})
+DECIDED_BY = frozenset({
+    "human",
+    "human_with_agent_suggestion",
+    "policy:policy_autonomous_factory_v0",
+})
 
 # Decision.evidence_refs — only these prefixes in contract v1
 EVIDENCE_PREFIXES = (PREFIX_EXPERIMENT, PREFIX_SIGNAL)

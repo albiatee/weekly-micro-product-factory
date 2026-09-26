@@ -1,0 +1,100 @@
+{
+  "cycles": {
+    "cyc_adf14dfc6c52451f": {
+      "id": "cyc_adf14dfc6c52451f",
+      "status": "completed",
+      "policy_id": "policy_autonomous_factory_v0",
+      "policy_version": "0.1.0",
+      "dry_run": true,
+      "created_at": "2026-09-26T20:19:30Z",
+      "updated_at": "2026-09-26T20:19:31Z",
+      "current_step": "SELECT",
+      "completed_steps": [
+        "COLLECT",
+        "QUALIFY",
+        "OPPORTUNITY",
+        "SELECT"
+      ],
+      "step_log": [
+        {
+          "step": "COLLECT",
+          "ok": true,
+          "note": "skipped_collect_on_cycle_false",
+          "refs": {}
+        },
+        {
+          "step": "QUALIFY",
+          "ok": true,
+          "refs": {
+            "qualified_count": 8,
+            "ids": [
+              "sig_d9b5f0e9419e4ed8",
+              "sig_56aff51496c749ab",
+              "sig_d674be3c034a447d",
+              "sig_e17bdca2e0354531",
+              "sig_3ce21f4b08ac4edf",
+              "sig_0394902d2b924911",
+              "sig_771d0f932de2423c",
+              "sig_554bd6d960544636"
+            ]
+          }
+        },
+        {
+          "step": "OPPORTUNITY",
+          "ok": true,
+          "refs": {
+            "generated": [
+              "opp_b054e38d314444ae",
+              "opp_b0fe7637c4bd47ca",
+              "opp_242fbca1aecd4d30"
+            ],
+            "store_count": 6
+          }
+        },
+        {
+          "step": "SELECT",
+          "ok": true,
+          "refs": {
+            "opportunity_ids": [
+              "opp_242fbca1aecd4d30"
+            ],
+            "scores": {
+              "opp_242fbca1aecd4d30": 131
+            }
+          }
+        }
+      ],
+      "selection": {
+        "opportunity_ids": [
+          "opp_242fbca1aecd4d30"
+        ],
+        "scores": {
+          "opp_242fbca1aecd4d30": 131
+        }
+      },
+      "experiment_ids": [],
+      "decision_ids": [],
+      "counters": {
+        "opportunities": 1,
+        "experiments": 0,
+        "publishes": 0,
+        "iterations": 0,
+        "spend": 0
+      },
+      "refs": {
+        "qualified_signal_ids": [
+          "sig_d9b5f0e9419e4ed8",
+          "sig_56aff51496c749ab",
+          "sig_d674be3c034a447d",
+          "sig_e17bdca2e0354531",
+          "sig_3ce21f4b08ac4edf",
+          "sig_0394902d2b924911",
+          "sig_771d0f932de2423c",
+          "sig_554bd6d960544636"
+        ]
+      },
+      "abort_reason": null
+    }
+  },
+  "updated_at": "2026-09-26T20:19:31Z"
+}

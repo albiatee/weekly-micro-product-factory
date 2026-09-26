@@ -1,0 +1,521 @@
+{
+  "opportunities": {
+    "opp_fa3528e9a5144d37": {
+      "id": "opp_fa3528e9a5144d37",
+      "status": "hypothesized",
+      "title": "On a single sales channel, inventory spreadsheets often start cracking around r…",
+      "problem": "On a single sales channel, inventory spreadsheets often start cracking around roughly 200 orders per month because daily manual updates lag. With two channels, cross-channel sync must happen within minutes or the last unit sells twice. Common failure modes: missed updates, broken formulas, stale quantities, and tab mismatches between Shopify and Amazon. [Market Discovery 2026 — spreadsheet break points by volume]",
+      "audience": "unspecified (not stated in source signals)",
+      "created_by": "market_discovery:verified_phase3",
+      "created_at": "2026-09-26T11:27:01Z",
+      "updated_at": "2026-09-26T11:27:01Z",
+      "signal_ids": [
+        "sig_0394902d2b924911"
+      ],
+      "value_proposition": "[HYPOTHESIS] A unknown approach may address: On a single sales channel, inventory spreadsheets often start cracking around r…. Not validated by market evidence beyond the linked signals.",
+      "hypothesis": "[HYPOTHESIS] If we offer a unknown solution for the stated problem, relevant users may show interest. This is a testable claim, not proven demand.",
+      "solution_type": "unknown",
+      "geo": {
+        "primary": "unknown",
+        "region": "unknown",
+        "languages": [
+          "en"
+        ],
+        "rationale": "languages on signals: en Not proof of geographic demand."
+      },
+      "score": {
+        "intensity": 45,
+        "willingness_to_pay": 15,
+        "reachability": 45,
+        "competition_gap": 25,
+        "feasibility": 40,
+        "ethics": 85,
+        "total": 42
+      },
+      "notes": "Generated candidate. Scores are prioritization heuristics only. Do not treat as market validation. | Phase 3 evidence layer: evidence is signal-backed; assumptions untested; evidence_strength is not market validation.",
+      "evidence": [
+        {
+          "type": "signal_excerpt",
+          "signal_id": "sig_0394902d2b924911",
+          "summary": "On a single sales channel, inventory spreadsheets often start cracking around roughly 200 orders per month because daily manual updates lag.",
+          "captured_at": "2026-09-26T10:05:00Z",
+          "strength": "strong",
+          "intent_type": "workaround",
+          "source": "manual",
+          "url": "https://nventory.io/blog/spreadsheets-vs-oms-what-order-volume",
+          "relevance": "problem_description"
+        },
+        {
+          "type": "source_verification_note",
+          "summary": "Vendor-estimate claim on page: spreadsheets 'break' at ~200 orders/month (1 channel). Treated as source-traceable vendor claim, not universal market fact.",
+          "signal_id": "sig_0394902d2b924911",
+          "strength": "weak",
+          "kind": "vendor_claim_boundary"
+        }
+      ],
+      "assumptions": [
+        {
+          "assumption": "Target users would pay or switch for a better solution.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "The problem occurs frequently enough to justify a product.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "Source nventory.io is a commercial OMS vendor; content promotes replacing spreadsheets.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        },
+        {
+          "assumption": "The '~200 orders/month' single-channel break point is a vendor operational estimate stated on the page, not an independent survey.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        },
+        {
+          "assumption": "Cross-channel break points (~100/month two channels) are the same vendor's operational framing.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        }
+      ],
+      "unknowns": [
+        "Market size is unknown.",
+        "Willingness to pay is not evidenced beyond source signals.",
+        "Problem frequency/severity distribution is unknown.",
+        "Geographic demand is unverified unless geo_hint was present on signals.",
+        "Primary geography not stated on source signals.",
+        "Whether target sellers would pay for a micro-tool vs full OMS is untested.",
+        "True order-volume thresholds for spreadsheet failure vary by catalog complexity and process discipline — not measured here.",
+        "Willingness to pay, conversion, and market size are unknown."
+      ],
+      "evidence_strength": "medium",
+      "problem_statement": "On a single sales channel, inventory spreadsheets often start cracking around roughly 200 orders per month because daily manual updates lag. With two channels, cross-channel sync must happen within minutes or the last unit sells twice. Common failure modes: missed updates, broken formulas, stale quantities, and tab mismatches between Shopify and Amazon. [Market Discovery 2026 — spreadsheet break points by volume]",
+      "target_user": "unspecified (not stated in source signals)",
+      "solution_direction": "unknown"
+    },
+    "opp_e66e9c4b59ec4350": {
+      "id": "opp_e66e9c4b59ec4350",
+      "status": "hypothesized",
+      "title": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is stat…",
+      "problem": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is static. Brands with many SKUs, long supplier lead times or multiple channels (Shopify plus Amazon) face stockouts, overselling and reorder decisions from stale numbers. Spreadsheets that work at low volume break as channels and SKU count grow; Shopify shows unit counts but not when to reorder. [Market Discovery 2026 — ecommerce inventory spreadsheet pain]",
+      "audience": "unspecified (not stated in source signals)",
+      "created_by": "market_discovery:verified_phase3",
+      "created_at": "2026-09-26T11:27:01Z",
+      "updated_at": "2026-09-26T11:27:01Z",
+      "signal_ids": [
+        "sig_3ce21f4b08ac4edf"
+      ],
+      "value_proposition": "[HYPOTHESIS] A unknown approach may address: Ecommerce inventory spreadsheets fail as sales continue while the sheet is stat…. Not validated by market evidence beyond the linked signals.",
+      "hypothesis": "[HYPOTHESIS] If we offer a unknown solution for the stated problem, relevant users may show interest. This is a testable claim, not proven demand.",
+      "solution_type": "unknown",
+      "geo": {
+        "primary": "unknown",
+        "region": "unknown",
+        "languages": [
+          "en"
+        ],
+        "rationale": "languages on signals: en Not proof of geographic demand."
+      },
+      "score": {
+        "intensity": 45,
+        "willingness_to_pay": 15,
+        "reachability": 45,
+        "competition_gap": 25,
+        "feasibility": 40,
+        "ethics": 85,
+        "total": 42
+      },
+      "notes": "Generated candidate. Scores are prioritization heuristics only. Do not treat as market validation. | Phase 3 evidence layer: evidence is signal-backed; assumptions untested; evidence_strength is not market validation.",
+      "evidence": [
+        {
+          "type": "signal_excerpt",
+          "signal_id": "sig_3ce21f4b08ac4edf",
+          "summary": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is static.",
+          "captured_at": "2026-09-26T10:04:00Z",
+          "strength": "medium",
+          "intent_type": "workaround",
+          "source": "manual",
+          "url": "https://canopyinventory.com/blog/why-spreadsheets-fail-inventory-management",
+          "relevance": "problem_description"
+        },
+        {
+          "type": "source_verification_note",
+          "summary": "Commercial inventory vendor article: static spreadsheets lag live sales; multi-channel/SKU growth increases stockout/oversell risk. Vendor tipping points are not independent research.",
+          "signal_id": "sig_3ce21f4b08ac4edf",
+          "strength": "weak",
+          "kind": "vendor_claim_boundary"
+        }
+      ],
+      "assumptions": [
+        {
+          "assumption": "Target users would pay or switch for a better solution.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "The problem occurs frequently enough to justify a product.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "Source Canopy is a commercial inventory product for Shopify brands.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        },
+        {
+          "assumption": "The '200+ SKUs' tipping point is a vendor-stated heuristic on the page, not an independent study.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        },
+        {
+          "assumption": "Spreadsheet lag, stockouts, and overselling are described as operational failure modes by the vendor.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        }
+      ],
+      "unknowns": [
+        "Market size is unknown.",
+        "Willingness to pay is not evidenced beyond source signals.",
+        "Problem frequency/severity distribution is unknown.",
+        "Geographic demand is unverified unless geo_hint was present on signals.",
+        "Primary geography not stated on source signals.",
+        "How many merchants experience this pain at what SKU/channel counts is not independently measured.",
+        "Willingness to pay for a micro reorder calculator vs full inventory SaaS is unknown.",
+        "Market size and conversion rates are unknown."
+      ],
+      "evidence_strength": "weak",
+      "problem_statement": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is static. Brands with many SKUs, long supplier lead times or multiple channels (Shopify plus Amazon) face stockouts, overselling and reorder decisions from stale numbers. Spreadsheets that work at low volume break as channels and SKU count grow; Shopify shows unit counts but not when to reorder. [Market Discovery 2026 — ecommerce inventory spreadsheet pain]",
+      "target_user": "unspecified (not stated in source signals)",
+      "solution_direction": "unknown"
+    },
+    "opp_f3f5fd84f70149b4": {
+      "id": "opp_f3f5fd84f70149b4",
+      "status": "hypothesized",
+      "title": "Residential plumbing appointments without reminder systems commonly see no-show…",
+      "problem": "Residential plumbing appointments without reminder systems commonly see no-show rates around 8–15 percent; automated reminder sequences (24-hour plus same-day) are reported to cut no-shows toward roughly 2–4 percent. Each no-show wastes technician drive time and a service slot worth significant direct lost revenue for small shops. Confirmation-required scheduling further reduces uncommitted bookings. [Market Discovery 2026 — local services plumbing no-shows]",
+      "audience": "small shops",
+      "created_by": "market_discovery:verified_phase3",
+      "created_at": "2026-09-26T11:27:02Z",
+      "updated_at": "2026-09-26T11:27:02Z",
+      "signal_ids": [
+        "sig_771d0f932de2423c"
+      ],
+      "value_proposition": "[HYPOTHESIS] A concierge approach may address: Residential plumbing appointments without reminder systems commonly see no-show…. Not validated by market evidence beyond the linked signals.",
+      "hypothesis": "[HYPOTHESIS] If we offer a concierge solution for the stated problem, relevant users may show interest. This is a testable claim, not proven demand.",
+      "solution_type": "concierge",
+      "geo": {
+        "primary": "unknown",
+        "region": "unknown",
+        "languages": [
+          "en"
+        ],
+        "rationale": "languages on signals: en Not proof of geographic demand."
+      },
+      "score": {
+        "intensity": 45,
+        "willingness_to_pay": 15,
+        "reachability": 45,
+        "competition_gap": 25,
+        "feasibility": 55,
+        "ethics": 85,
+        "total": 45
+      },
+      "notes": "Generated candidate. Scores are prioritization heuristics only. Do not treat as market validation. | Phase 3 evidence layer: evidence is signal-backed; assumptions untested; evidence_strength is not market validation.",
+      "evidence": [
+        {
+          "type": "signal_excerpt",
+          "signal_id": "sig_771d0f932de2423c",
+          "summary": "Residential plumbing appointments without reminder systems commonly see no-show rates around 8–15 percent; automated reminder sequences (24-hour plus same-day) are reported to cut no-shows toward roughly 2–4 percent.",
+          "captured_at": "2026-09-26T10:06:00Z",
+          "strength": "medium",
+          "intent_type": "problem",
+          "source": "manual",
+          "url": "https://exoserva.com/blog/plumbing-no-show-strategies",
+          "relevance": "problem_description"
+        },
+        {
+          "type": "source_verification_note",
+          "summary": "Commercial field-service vendor claims residential plumbing no-shows average 8–15% without reminders and fall with automated sequences. Percentages are vendor-presented, not primary research.",
+          "signal_id": "sig_771d0f932de2423c",
+          "strength": "weak",
+          "kind": "vendor_claim_boundary"
+        }
+      ],
+      "assumptions": [
+        {
+          "assumption": "Target users would pay or switch for a better solution.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "The problem occurs frequently enough to justify a product.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "Source Exoserva is a commercial field-service operations platform.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        },
+        {
+          "assumption": "No-show rate ranges (e.g. 8–15% without reminders, 2–4% with sequences) are presented by the vendor without a visible primary study methodology on the page.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        },
+        {
+          "assumption": "Dollar-per-no-show figures on the page are vendor estimates, not audited industry statistics.",
+          "importance": "high",
+          "confidence": "medium",
+          "status": "documented_source_boundary"
+        }
+      ],
+      "unknowns": [
+        "Market size is unknown.",
+        "Willingness to pay is not evidenced beyond source signals.",
+        "Problem frequency/severity distribution is unknown.",
+        "Geographic demand is unverified unless geo_hint was present on signals.",
+        "Primary geography not stated on source signals.",
+        "Actual no-show rates for a specific trade/geo/shop size are not measured in this signal set.",
+        "Whether a lightweight reminder page would be adopted vs full field-service SaaS is untested.",
+        "Willingness to pay, retention, and market size are unknown."
+      ],
+      "evidence_strength": "weak",
+      "problem_statement": "Residential plumbing appointments without reminder systems commonly see no-show rates around 8–15 percent; automated reminder sequences (24-hour plus same-day) are reported to cut no-shows toward roughly 2–4 percent. Each no-show wastes technician drive time and a service slot worth significant direct lost revenue for small shops. Confirmation-required scheduling further reduces uncommitted bookings. [Market Discovery 2026 — local services plumbing no-shows]",
+      "target_user": "small shops",
+      "solution_direction": "concierge"
+    },
+    "opp_b054e38d314444ae": {
+      "id": "opp_b054e38d314444ae",
+      "status": "hypothesized",
+      "title": "Small businesses still rely on spreadsheets for core financial functions despit…",
+      "problem": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes create a back-office full of copy-paste. Manual invoice handling is estimated far more expensive per bill than automated processing, and finance teams still spend hours collecting invoices, matching payments and reconciling accounts before closing books. [Market Discovery 2026 — AI+SME / ops finance pain]",
+      "audience": "core financial functions despite low-cost",
+      "created_by": "orchestrator:cycle",
+      "created_at": "2026-09-26T20:19:30Z",
+      "updated_at": "2026-09-26T20:19:30Z",
+      "signal_ids": [
+        "sig_d9b5f0e9419e4ed8"
+      ],
+      "value_proposition": "[HYPOTHESIS] A unknown approach may address: Small businesses still rely on spreadsheets for core financial functions despit…. Not validated by market evidence beyond the linked signals.",
+      "hypothesis": "[HYPOTHESIS] If we offer a unknown solution for the stated problem, relevant users may show interest. This is a testable claim, not proven demand.",
+      "solution_type": "unknown",
+      "geo": {
+        "primary": "unknown",
+        "region": "unknown",
+        "languages": [
+          "en"
+        ],
+        "rationale": "languages on signals: en Not proof of geographic demand."
+      },
+      "score": {
+        "intensity": 45,
+        "willingness_to_pay": 27,
+        "reachability": 45,
+        "competition_gap": 25,
+        "feasibility": 40,
+        "ethics": 85,
+        "total": 44
+      },
+      "notes": "Generated candidate. Scores are prioritization heuristics only. Do not treat as market validation. | Phase 3 evidence layer: evidence is signal-backed; assumptions untested; evidence_strength is not market validation.",
+      "evidence": [
+        {
+          "type": "signal_excerpt",
+          "signal_id": "sig_d9b5f0e9419e4ed8",
+          "summary": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools.",
+          "captured_at": "2026-09-26T10:00:00Z",
+          "strength": "strong",
+          "intent_type": "workaround",
+          "source": "manual",
+          "url": "https://www.forbes.com/councils/forbesfinancecouncil/2025/07/28/the-real-cost-of-manual-accounting-for-smbs/",
+          "relevance": "problem_description"
+        }
+      ],
+      "assumptions": [
+        {
+          "assumption": "Target users would pay or switch for a better solution.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "The problem occurs frequently enough to justify a product.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        }
+      ],
+      "unknowns": [
+        "Market size is unknown.",
+        "Willingness to pay is not evidenced beyond source signals.",
+        "Problem frequency/severity distribution is unknown.",
+        "Geographic demand is unverified unless geo_hint was present on signals.",
+        "Primary geography not stated on source signals."
+      ],
+      "evidence_strength": "medium",
+      "problem_statement": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes create a back-office full of copy-paste. Manual invoice handling is estimated far more expensive per bill than automated processing, and finance teams still spend hours collecting invoices, matching payments and reconciling accounts before closing books. [Market Discovery 2026 — AI+SME / ops finance pain]",
+      "target_user": "core financial functions despite low-cost",
+      "solution_direction": "unknown"
+    },
+    "opp_b0fe7637c4bd47ca": {
+      "id": "opp_b0fe7637c4bd47ca",
+      "status": "hypothesized",
+      "title": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data…",
+      "problem": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution. Velocity-first models claim far more hours can go to implementation if reporting is templatized. Clients feel campaign delay while teams assemble decks to justify retainers. [Market Discovery 2026 — SEO reporting theater]",
+      "audience": "unspecified (not stated in source signals)",
+      "created_by": "orchestrator:cycle",
+      "created_at": "2026-09-26T20:19:30Z",
+      "updated_at": "2026-09-26T20:19:30Z",
+      "signal_ids": [
+        "sig_56aff51496c749ab"
+      ],
+      "value_proposition": "[HYPOTHESIS] A unknown approach may address: SEO and marketing agencies burn billable hours on bloated PDF reporting — data…. Not validated by market evidence beyond the linked signals.",
+      "hypothesis": "[HYPOTHESIS] If we offer a unknown solution for the stated problem, relevant users may show interest. This is a testable claim, not proven demand.",
+      "solution_type": "unknown",
+      "geo": {
+        "primary": "unknown",
+        "region": "unknown",
+        "languages": [
+          "en"
+        ],
+        "rationale": "languages on signals: en Not proof of geographic demand."
+      },
+      "score": {
+        "intensity": 43,
+        "willingness_to_pay": 15,
+        "reachability": 45,
+        "competition_gap": 25,
+        "feasibility": 40,
+        "ethics": 85,
+        "total": 42
+      },
+      "notes": "Generated candidate. Scores are prioritization heuristics only. Do not treat as market validation. | Phase 3 evidence layer: evidence is signal-backed; assumptions untested; evidence_strength is not market validation.",
+      "evidence": [
+        {
+          "type": "signal_excerpt",
+          "signal_id": "sig_56aff51496c749ab",
+          "summary": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution.",
+          "captured_at": "2026-09-26T10:03:00Z",
+          "strength": "strong",
+          "intent_type": "workaround",
+          "source": "manual",
+          "url": "https://icowebsolutions.com/the-quiet-quitting-of-client-accounts-how-redundant-agency-reporting-kills-real-seo-velocity/",
+          "relevance": "problem_description"
+        }
+      ],
+      "assumptions": [
+        {
+          "assumption": "Target users would pay or switch for a better solution.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "The problem occurs frequently enough to justify a product.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        }
+      ],
+      "unknowns": [
+        "Market size is unknown.",
+        "Willingness to pay is not evidenced beyond source signals.",
+        "Problem frequency/severity distribution is unknown.",
+        "Geographic demand is unverified unless geo_hint was present on signals.",
+        "Primary geography not stated on source signals."
+      ],
+      "evidence_strength": "medium",
+      "problem_statement": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution. Velocity-first models claim far more hours can go to implementation if reporting is templatized. Clients feel campaign delay while teams assemble decks to justify retainers. [Market Discovery 2026 — SEO reporting theater]",
+      "target_user": "unspecified (not stated in source signals)",
+      "solution_direction": "unknown"
+    },
+    "opp_242fbca1aecd4d30": {
+      "id": "opp_242fbca1aecd4d30",
+      "status": "hypothesized",
+      "title": "Small businesses still rely on spreadsheets for core financial functions despit…",
+      "problem": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes create a back-office full of copy-paste. Manual invoice handling is estimated far more expensive per bill than automated processing, and finance teams still spend hours collecting invoices, matching payments and reconciling accounts before closing books. [Market Discovery 2026 — AI+SME / ops finance pain]",
+      "audience": "core financial functions despite low-cost",
+      "created_by": "orchestrator:cycle",
+      "created_at": "2026-09-26T20:19:31Z",
+      "updated_at": "2026-09-26T20:19:31Z",
+      "signal_ids": [
+        "sig_d674be3c034a447d"
+      ],
+      "value_proposition": "[HYPOTHESIS] A unknown approach may address: Small businesses still rely on spreadsheets for core financial functions despit…. Not validated by market evidence beyond the linked signals.",
+      "hypothesis": "[HYPOTHESIS] If we offer a unknown solution for the stated problem, relevant users may show interest. This is a testable claim, not proven demand.",
+      "solution_type": "unknown",
+      "geo": {
+        "primary": "unknown",
+        "region": "unknown",
+        "languages": [
+          "en"
+        ],
+        "rationale": "languages on signals: en Not proof of geographic demand."
+      },
+      "score": {
+        "intensity": 45,
+        "willingness_to_pay": 27,
+        "reachability": 45,
+        "competition_gap": 25,
+        "feasibility": 40,
+        "ethics": 85,
+        "total": 44
+      },
+      "notes": "Generated candidate. Scores are prioritization heuristics only. Do not treat as market validation. | Phase 3 evidence layer: evidence is signal-backed; assumptions untested; evidence_strength is not market validation.",
+      "evidence": [
+        {
+          "type": "signal_excerpt",
+          "signal_id": "sig_d674be3c034a447d",
+          "summary": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools.",
+          "captured_at": "2026-09-26T10:00:00Z",
+          "strength": "strong",
+          "intent_type": "workaround",
+          "source": "manual",
+          "url": "https://www.forbes.com/councils/forbesfinancecouncil/2025/07/28/the-real-cost-of-manual-accounting-for-smbs/",
+          "relevance": "problem_description"
+        }
+      ],
+      "assumptions": [
+        {
+          "assumption": "Target users would pay or switch for a better solution.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        },
+        {
+          "assumption": "The problem occurs frequently enough to justify a product.",
+          "importance": "high",
+          "confidence": "low",
+          "status": "untested"
+        }
+      ],
+      "unknowns": [
+        "Market size is unknown.",
+        "Willingness to pay is not evidenced beyond source signals.",
+        "Problem frequency/severity distribution is unknown.",
+        "Geographic demand is unverified unless geo_hint was present on signals.",
+        "Primary geography not stated on source signals."
+      ],
+      "evidence_strength": "medium",
+      "problem_statement": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes create a back-office full of copy-paste. Manual invoice handling is estimated far more expensive per bill than automated processing, and finance teams still spend hours collecting invoices, matching payments and reconciling accounts before closing books. [Market Discovery 2026 — AI+SME / ops finance pain]",
+      "target_user": "core financial functions despite low-cost",
+      "solution_direction": "unknown"
+    }
+  },
+  "updated_at": "2026-09-26T20:19:31Z"
+}

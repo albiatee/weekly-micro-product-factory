@@ -1,0 +1,20 @@
+{
+  "orchestrator_enabled": false,
+  "policy_id": "policy_autonomous_factory_v0",
+  "policy_version": "0.1.0",
+  "allowed_templates": ["static_html_microproduct"],
+  "allowed_channels": ["github_pages"],
+  "allowed_source_keys": ["manual", "other", "reddit", "hnrss_ask"],
+  "max_opportunities_per_cycle": 1,
+  "max_experiments_per_cycle": 1,
+  "max_iterations_per_opportunity": 2,
+  "max_publishes_per_cycle": 1,
+  "max_publishes_per_week": 3,
+  "max_spend_per_cycle": 0,
+  "max_spend_per_week": 0,
+  "max_risk": 0.5,
+  "minimum_qualified_source_count": 1,
+  "auto_feedback_convert": false,
+  "default_stop_after_dry_run": "DECIDE",
+  "collect_on_cycle": false
+}

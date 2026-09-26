@@ -1,0 +1,299 @@
+{
+  "signals": {
+    "sig_d9b5f0e9419e4ed8": {
+      "id": "sig_d9b5f0e9419e4ed8",
+      "source": "manual",
+      "raw_text": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes create a back-office full of copy-paste. Manual invoice handling is estimated far more expensive per bill than automated processing, and finance teams still spend hours collecting invoices, matching payments and reconciling accounts before closing books. [Market Discovery 2026 — AI+SME / ops finance pain]",
+      "captured_at": "2026-09-26T10:00:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://www.forbes.com/councils/forbesfinancecouncil/2025/07/28/the-real-cost-of-manual-accounting-for-smbs/",
+      "meta": {
+        "sector": "ai_sme_operations",
+        "discovery_theme": "manual_invoice_reconciliation",
+        "evidence_kind": "industry_report_summary",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "workaround",
+      "confidence": 0.75,
+      "evidence_strength": "strong",
+      "qualification_status": "qualified",
+      "problem_statement": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools."
+    },
+    "sig_4a6b4ad583394a58": {
+      "id": "sig_4a6b4ad583394a58",
+      "source": "manual",
+      "raw_text": "SMB AI tool adoption shows a recurring pattern: roughly a third of paid tools are abandoned within about 60 days. Founders report tool fatigue — signing up for scheduling, email and content AI until monthly spend stacks up while only one or two tools are used weekly. Tools that stick tend to be boring daily friction removers (meeting notes, email drafting, invoice processing), not aspirational lead-gen agents. [Market Discovery 2026 — AI tool graveyard / tool fatigue]",
+      "captured_at": "2026-09-26T10:01:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://www.reddit.com/r/AiForSmallBusiness/comments/1rjt5hy/the_ai_tool_graveyard_23_tools_smbs_paid_for_and",
+      "meta": {
+        "sector": "ai_sme_operations",
+        "discovery_theme": "ai_subscription_churn_tool_fatigue",
+        "evidence_kind": "community_pattern",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "unknown",
+      "confidence": 0.4,
+      "evidence_strength": "weak",
+      "qualification_status": "review",
+      "problem_statement": "SMB AI tool adoption shows a recurring pattern: roughly a third of paid tools are abandoned within about 60 days."
+    },
+    "sig_46e0334adf1c4dee": {
+      "id": "sig_46e0334adf1c4dee",
+      "source": "manual",
+      "raw_text": "Marketing teams managing multiple agencies spend large parts of the week coordinating: proposal reviews, reconciling deliverables, status calls and translating briefs between design, content and paid teams. Marketers report that a minority of time goes to actual craft work while chasing feedback and internal meetings consume the rest. Fragmented agency stacks create slow launches and misaligned SEO vs paid vs content. [Market Discovery 2026 — marketing coordination tax]",
+      "captured_at": "2026-09-26T10:02:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://locomotive.agency/blog/marketing-fragmentation-tax/",
+      "meta": {
+        "sector": "marketing_seo_content",
+        "discovery_theme": "agency_coordination_overhead",
+        "evidence_kind": "industry_analysis",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "unknown",
+      "confidence": 0.4,
+      "evidence_strength": "weak",
+      "qualification_status": "review",
+      "problem_statement": "Marketing teams managing multiple agencies spend large parts of the week coordinating: proposal reviews, reconciling deliverables, status calls and translating briefs between design, content and paid teams."
+    },
+    "sig_56aff51496c749ab": {
+      "id": "sig_56aff51496c749ab",
+      "source": "manual",
+      "raw_text": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution. Velocity-first models claim far more hours can go to implementation if reporting is templatized. Clients feel campaign delay while teams assemble decks to justify retainers. [Market Discovery 2026 — SEO reporting theater]",
+      "captured_at": "2026-09-26T10:03:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://icowebsolutions.com/the-quiet-quitting-of-client-accounts-how-redundant-agency-reporting-kills-real-seo-velocity/",
+      "meta": {
+        "sector": "marketing_seo_content",
+        "discovery_theme": "agency_reporting_overhead",
+        "evidence_kind": "industry_analysis",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "workaround",
+      "confidence": 0.6,
+      "evidence_strength": "strong",
+      "qualification_status": "qualified",
+      "problem_statement": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution."
+    },
+    "sig_d674be3c034a447d": {
+      "id": "sig_d674be3c034a447d",
+      "source": "manual",
+      "raw_text": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes create a back-office full of copy-paste. Manual invoice handling is estimated far more expensive per bill than automated processing, and finance teams still spend hours collecting invoices, matching payments and reconciling accounts before closing books. [Market Discovery 2026 — AI+SME / ops finance pain]",
+      "captured_at": "2026-09-26T10:00:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://www.forbes.com/councils/forbesfinancecouncil/2025/07/28/the-real-cost-of-manual-accounting-for-smbs/",
+      "meta": {
+        "sector": "ai_sme_operations",
+        "discovery_theme": "manual_invoice_reconciliation",
+        "evidence_kind": "industry_report_summary",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "workaround",
+      "confidence": 0.75,
+      "evidence_strength": "strong",
+      "qualification_status": "qualified",
+      "problem_statement": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools."
+    },
+    "sig_dfc8761eaa3344f0": {
+      "id": "sig_dfc8761eaa3344f0",
+      "source": "manual",
+      "raw_text": "SMB AI tool adoption shows a recurring pattern: roughly a third of paid tools are abandoned within about 60 days. Founders report tool fatigue — signing up for scheduling, email and content AI until monthly spend stacks up while only one or two tools are used weekly. Tools that stick tend to be boring daily friction removers (meeting notes, email drafting, invoice processing), not aspirational lead-gen agents. [Market Discovery 2026 — AI tool graveyard / tool fatigue]",
+      "captured_at": "2026-09-26T10:01:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://www.reddit.com/r/AiForSmallBusiness/comments/1rjt5hy/the_ai_tool_graveyard_23_tools_smbs_paid_for_and",
+      "meta": {
+        "sector": "ai_sme_operations",
+        "discovery_theme": "ai_subscription_churn_tool_fatigue",
+        "evidence_kind": "community_pattern",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "unknown",
+      "confidence": 0.4,
+      "evidence_strength": "weak",
+      "qualification_status": "review",
+      "problem_statement": "SMB AI tool adoption shows a recurring pattern: roughly a third of paid tools are abandoned within about 60 days."
+    },
+    "sig_45e05bb39bf34830": {
+      "id": "sig_45e05bb39bf34830",
+      "source": "manual",
+      "raw_text": "Marketing teams managing multiple agencies spend large parts of the week coordinating: proposal reviews, reconciling deliverables, status calls and translating briefs between design, content and paid teams. Marketers report that a minority of time goes to actual craft work while chasing feedback and internal meetings consume the rest. Fragmented agency stacks create slow launches and misaligned SEO vs paid vs content. [Market Discovery 2026 — marketing coordination tax]",
+      "captured_at": "2026-09-26T10:02:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://locomotive.agency/blog/marketing-fragmentation-tax/",
+      "meta": {
+        "sector": "marketing_seo_content",
+        "discovery_theme": "agency_coordination_overhead",
+        "evidence_kind": "industry_analysis",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "unknown",
+      "confidence": 0.4,
+      "evidence_strength": "weak",
+      "qualification_status": "review",
+      "problem_statement": "Marketing teams managing multiple agencies spend large parts of the week coordinating: proposal reviews, reconciling deliverables, status calls and translating briefs between design, content and paid teams."
+    },
+    "sig_e17bdca2e0354531": {
+      "id": "sig_e17bdca2e0354531",
+      "source": "manual",
+      "raw_text": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution. Velocity-first models claim far more hours can go to implementation if reporting is templatized. Clients feel campaign delay while teams assemble decks to justify retainers. [Market Discovery 2026 — SEO reporting theater]",
+      "captured_at": "2026-09-26T10:03:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://icowebsolutions.com/the-quiet-quitting-of-client-accounts-how-redundant-agency-reporting-kills-real-seo-velocity/",
+      "meta": {
+        "sector": "marketing_seo_content",
+        "discovery_theme": "agency_reporting_overhead",
+        "evidence_kind": "industry_analysis",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "workaround",
+      "confidence": 0.6,
+      "evidence_strength": "strong",
+      "qualification_status": "qualified",
+      "problem_statement": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution."
+    },
+    "sig_3ce21f4b08ac4edf": {
+      "id": "sig_3ce21f4b08ac4edf",
+      "source": "manual",
+      "raw_text": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is static. Brands with many SKUs, long supplier lead times or multiple channels (Shopify plus Amazon) face stockouts, overselling and reorder decisions from stale numbers. Spreadsheets that work at low volume break as channels and SKU count grow; Shopify shows unit counts but not when to reorder. [Market Discovery 2026 — ecommerce inventory spreadsheet pain]",
+      "captured_at": "2026-09-26T10:04:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://canopyinventory.com/blog/why-spreadsheets-fail-inventory-management",
+      "meta": {
+        "sector": "ecommerce",
+        "discovery_theme": "multi_channel_inventory_spreadsheet",
+        "evidence_kind": "operator_vendor_analysis",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "workaround",
+      "confidence": 0.75,
+      "evidence_strength": "medium",
+      "qualification_status": "qualified",
+      "problem_statement": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is static."
+    },
+    "sig_0394902d2b924911": {
+      "id": "sig_0394902d2b924911",
+      "source": "manual",
+      "raw_text": "On a single sales channel, inventory spreadsheets often start cracking around roughly 200 orders per month because daily manual updates lag. With two channels, cross-channel sync must happen within minutes or the last unit sells twice. Common failure modes: missed updates, broken formulas, stale quantities, and tab mismatches between Shopify and Amazon. [Market Discovery 2026 — spreadsheet break points by volume]",
+      "captured_at": "2026-09-26T10:05:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://nventory.io/blog/spreadsheets-vs-oms-what-order-volume",
+      "meta": {
+        "sector": "ecommerce",
+        "discovery_theme": "inventory_sync_break_points",
+        "evidence_kind": "operator_vendor_analysis",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "workaround",
+      "confidence": 0.75,
+      "evidence_strength": "strong",
+      "qualification_status": "qualified",
+      "problem_statement": "On a single sales channel, inventory spreadsheets often start cracking around roughly 200 orders per month because daily manual updates lag."
+    },
+    "sig_771d0f932de2423c": {
+      "id": "sig_771d0f932de2423c",
+      "source": "manual",
+      "raw_text": "Residential plumbing appointments without reminder systems commonly see no-show rates around 8–15 percent; automated reminder sequences (24-hour plus same-day) are reported to cut no-shows toward roughly 2–4 percent. Each no-show wastes technician drive time and a service slot worth significant direct lost revenue for small shops. Confirmation-required scheduling further reduces uncommitted bookings. [Market Discovery 2026 — local services plumbing no-shows]",
+      "captured_at": "2026-09-26T10:06:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://exoserva.com/blog/plumbing-no-show-strategies",
+      "meta": {
+        "sector": "local_services",
+        "discovery_theme": "appointment_no_shows",
+        "evidence_kind": "field_service_industry",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "problem",
+      "confidence": 0.75,
+      "evidence_strength": "medium",
+      "qualification_status": "qualified",
+      "problem_statement": "Residential plumbing appointments without reminder systems commonly see no-show rates around 8–15 percent; automated reminder sequences (24-hour plus same-day) are reported to cut no-shows toward roughly 2–4 percent."
+    },
+    "sig_80a565bf0c9b4533": {
+      "id": "sig_80a565bf0c9b4533",
+      "source": "manual",
+      "raw_text": "HVAC residential service no-show rates without confirmation systems are often cited near 12–16 percent, falling under about 5 percent with a full three-touch reminder sequence (booking confirmation, 48-hour reminder, day-of text). Contractors lose labor and opportunity cost per empty truck roll; deposit policies and SMS confirmations are common mitigations alongside full field-service platforms. [Market Discovery 2026 — HVAC no-shows]",
+      "captured_at": "2026-09-26T10:07:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://calljolt.com/blog/hvac/reducing-no-shows-and-cancellations",
+      "meta": {
+        "sector": "local_services",
+        "discovery_theme": "hvac_no_shows_reminders",
+        "evidence_kind": "field_service_industry",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "unknown",
+      "confidence": 0.4,
+      "evidence_strength": "weak",
+      "qualification_status": "review",
+      "problem_statement": "HVAC residential service no-show rates without confirmation systems are often cited near 12–16 percent, falling under about 5 percent with a full three-touch reminder sequence (booking confirmation, 48-hour reminder, day-of text)."
+    },
+    "sig_cf58b7867a9f4d2a": {
+      "id": "sig_cf58b7867a9f4d2a",
+      "source": "manual",
+      "raw_text": "Most freelancers experience late client payments at least occasionally; industry analyses commonly report that a large share of freelance invoices are paid past due and that freelancers spend substantial annual hours chasing payment. Late payment is often administrative — invoices lost in AP, missing portal entry, approval queues — not pure refusal to pay. Automated reminder sequences and clearer terms reduce delays but full accounting suites may be heavier than a lightweight receivables tracker needs. [Market Discovery 2026 — freelancer late invoices]",
+      "captured_at": "2026-09-26T10:08:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://www.plutio.com/freelancer-magazine/late-invoice-payments",
+      "meta": {
+        "sector": "freelancer_professional_tools",
+        "discovery_theme": "late_invoice_payment_chase",
+        "evidence_kind": "industry_freelancer_data",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "unknown",
+      "confidence": 0.4,
+      "evidence_strength": "weak",
+      "qualification_status": "review",
+      "problem_statement": "Most freelancers experience late client payments at least occasionally; industry analyses commonly report that a large share of freelance invoices are paid past due and that freelancers spend substantial annual hours chasing payment."
+    },
+    "sig_554bd6d960544636": {
+      "id": "sig_554bd6d960544636",
+      "source": "manual",
+      "raw_text": "Freelancers lose productive time to payment collection instead of billable work; published compilations cite on the order of 100 hours per year chasing overdue invoices and material shares of income tied up in receivables. Process gaps — no receipt confirmation, Net-30 defaults, single polite follow-up then silence — make late payment structural. Market is crowded with FreshBooks, Bonsai, Wave and similar; any micro-product must be narrower than full invoicing suites. [Market Discovery 2026 — cost of chasing freelance payments]",
+      "captured_at": "2026-09-26T10:09:00Z",
+      "created_by": "market_discovery:sectors5",
+      "language": "en",
+      "url": "https://agiled.app/statistics/late-payment-statistics",
+      "meta": {
+        "sector": "freelancer_professional_tools",
+        "discovery_theme": "receivables_chase_time_cost",
+        "evidence_kind": "industry_statistics_compilation",
+        "not_market_validation": true,
+        "quality_engine": "discovery.quality.v1"
+      },
+      "intent_type": "workaround",
+      "confidence": 0.6,
+      "evidence_strength": "strong",
+      "qualification_status": "qualified",
+      "problem_statement": "Freelancers lose productive time to payment collection instead of billable work; published compilations cite on the order of 100 hours per year chasing overdue invoices and material shares of income tied up in receivables."
+    }
+  },
+  "updated_at": "2026-09-26T11:19:17Z"
+}
