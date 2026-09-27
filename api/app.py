@@ -264,6 +264,42 @@ def experiments_complete(body: ExperimentCompleteRequest) -> dict[str, Any]:
     }
 
 
+
+
+class BuildRunRequest(BaseModel):
+    decision_id: str
+    dry_run: bool = False
+
+
+@app.post("/builds/run")
+def builds_run(body: BuildRunRequest) -> dict[str, Any]:
+    """P6 automated build from execute Decision only. No public publish."""
+    from production.automated_build import run_automated_build
+
+    res = run_automated_build(
+        body.decision_id,
+        dry_run=body.dry_run,
+        opportunities_root=get_root() / "data" / "opportunities",
+        decisions_root=get_root() / "data" / "decisions",
+        experiments_root=get_root() / "data" / "experiments",
+        production_root=get_root() / "data" / "production",
+        builds_root=get_root() / "data" / "builds",
+    )
+    return {
+        "ok": res.ok,
+        "build_id": res.build_id,
+        "decision_id": res.decision_id,
+        "opportunity_id": res.opportunity_id,
+        "production_spec_id": res.production_spec_id,
+        "artifact_path": res.artifact_path,
+        "production_ref": res.production_ref,
+        "errors": res.errors,
+        "notes": res.notes,
+        "dry_run": res.dry_run,
+        "live_publish": False,
+    }
+
+
 @app.post("/cycles/live")
 def post_cycles_live_forbidden() -> None:
     """Explicitly blocked — no live execution via API v0.1."""

@@ -204,3 +204,11 @@ See [`docs/P5_EXPERIMENT_RUNNER.md`](P5_EXPERIMENT_RUNNER.md).
 - Limited local artifacts + explicit metrics only
 - Policy evaluation after complete is **advisory**
 - No public publish and no Path A build from the runner
+
+
+## 20. Automated Build P6
+
+See [`docs/P6_AUTOMATED_BUILD.md`](P6_AUTOMATED_BUILD.md).
+
+- Only after Decision `execute` and opportunity `building`
+- Local `products/bridge/` only — not Path A weekly publish
