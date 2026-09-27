@@ -212,3 +212,11 @@ See [`docs/P6_AUTOMATED_BUILD.md`](P6_AUTOMATED_BUILD.md).
 
 - Only after Decision `execute` and opportunity `building`
 - Local `products/bridge/` only — not Path A weekly publish
+
+
+## 21. Analytics & Learning P7
+
+See [`docs/P7_ANALYTICS_LEARNING.md`](P7_ANALYTICS_LEARNING.md).
+
+- Metrics are user/system supplied only — never fabricated
+- Learning is advisory; does not reject similar ideas

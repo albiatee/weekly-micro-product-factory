@@ -113,8 +113,9 @@ def get_distributions() -> dict[str, Any]:
     return data
 
 
-@app.get("/learning")
-def get_learning() -> dict[str, Any]:
+@app.get("/analytics/snapshots")
+def get_analytics_snapshots() -> dict[str, Any]:
+    """Legacy aggregate analytics snapshots (Phase 8-era store)."""
     data = read_index("analytics", "learnings", root=get_root())
     if data["count"] == 0:
         alt = read_index("analytics", "learning_records", root=get_root())
@@ -298,6 +299,92 @@ def builds_run(body: BuildRunRequest) -> dict[str, Any]:
         "dry_run": res.dry_run,
         "live_publish": False,
     }
+
+
+
+
+@app.get("/analytics")
+def get_analytics_list() -> dict[str, Any]:
+    from analytics.records import list_analytics_records
+
+    items = list_analytics_records(get_root() / "data" / "analytics")
+    return {"items": items, "count": len(items), "store_status": "ok"}
+
+
+@app.get("/analytics/{analytics_id}")
+def get_analytics_by_id(analytics_id: str) -> dict[str, Any]:
+    from analytics.records import get_analytics_record
+
+    rec = get_analytics_record(analytics_id, get_root() / "data" / "analytics")
+    if not rec:
+        raise HTTPException(status_code=404, detail="analytics not found")
+    return rec
+
+
+@app.get("/learning")
+def get_learning_list() -> dict[str, Any]:
+    from learning.engine import list_learning_records
+
+    items = list_learning_records(get_root() / "data" / "analytics")
+    return {"items": items, "count": len(items), "store_status": "ok", "advisory": True}
+
+
+@app.get("/learning/{learning_id}")
+def get_learning_by_id(learning_id: str) -> dict[str, Any]:
+    from learning.engine import list_learning_records
+
+    items = list_learning_records(get_root() / "data" / "analytics")
+    rec = items.get(learning_id)
+    if not rec:
+        raise HTTPException(status_code=404, detail="learning not found")
+    return rec
+
+
+class AnalyticsRecordRequest(BaseModel):
+    metrics: dict[str, Any] | None = None
+    build_id: str | None = None
+    opportunity_id: str | None = None
+    product_id: str | None = None
+    period: str | None = "unspecified"
+    not_available: bool = False
+    generate_learning: bool = False
+
+
+@app.post("/analytics/record")
+def post_analytics_record(body: AnalyticsRecordRequest) -> dict[str, Any]:
+    """Local-only: record user-supplied metrics. No publish / no decision change."""
+    from analytics.records import record_analytics, record_not_available
+    from learning.engine import generate_learning_from_analytics
+
+    root = get_root() / "data" / "analytics"
+    if body.not_available:
+        res = record_not_available(
+            build_id=body.build_id,
+            opportunity_id=body.opportunity_id,
+            product_id=body.product_id,
+            analytics_root=root,
+        )
+    else:
+        res = record_analytics(
+            metrics=body.metrics or {},
+            build_id=body.build_id,
+            opportunity_id=body.opportunity_id,
+            product_id=body.product_id,
+            period=body.period,
+            analytics_root=root,
+        )
+    out: dict[str, Any] = {
+        "ok": res.ok,
+        "errors": res.errors,
+        "record": res.record,
+        "live_publish": False,
+        "decision_changed": False,
+    }
+    if res.ok and body.generate_learning and res.record:
+        lr = generate_learning_from_analytics(res.record["id"], analytics_root=root)
+        out["learning"] = lr.learning
+        out["learning_ok"] = lr.ok
+    return out
 
 
 @app.post("/cycles/live")

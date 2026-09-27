@@ -160,11 +160,22 @@ def build_corpus(root: Path | None = None) -> list[dict[str, Any]]:
         learnings = _load_items("analytics", key, root)
         if learnings:
             for lid, lr in learnings.items():
+                lessons = lr.get("lessons") or []
+                if isinstance(lessons, list):
+                    lessons_txt = " ".join(str(x) for x in lessons)
+                else:
+                    lessons_txt = str(lessons)
+                obs = lr.get("observations") or []
+                obs_txt = " ".join(
+                    str(o.get("statement") or "") for o in obs if isinstance(o, dict)
+                )
                 text = join_fields(
                     [
                         lr.get("summary"),
                         lr.get("insight"),
                         lr.get("lesson"),
+                        lessons_txt,
+                        obs_txt,
                         lr.get("notes"),
                         str(lr.get("outcome") or ""),
                     ]
@@ -174,9 +185,20 @@ def build_corpus(root: Path | None = None) -> list[dict[str, Any]]:
                         entity_type="learning",
                         entity_id=lid,
                         text=text,
-                        summary=(lr.get("summary") or lr.get("insight") or "")[:240],
-                        source=lr.get("opportunity_id") or lr.get("experiment_id"),
-                        extra={"outcome": lr.get("outcome")},
+                        summary=(
+                            (lr.get("summary") or lr.get("insight") or lessons_txt or obs_txt)
+                            or ""
+                        )[:240],
+                        source=lr.get("opportunity_id") or lr.get("experiment_id") or lr.get("source_analytics_id"),
+                        extra={
+                            "outcome": lr.get("outcome"),
+                            "confidence": lr.get("confidence"),
+                            "build_id": lr.get("build_id"),
+                            "opportunity_id": lr.get("opportunity_id"),
+                            "source_analytics_id": lr.get("source_analytics_id"),
+                            "lessons": lessons if isinstance(lessons, list) else [],
+                            "advisory": True,
+                        },
                     )
                 )
             break

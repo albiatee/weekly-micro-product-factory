@@ -17,10 +17,11 @@ def store_path(root: Path | None = None) -> Path:
 def load_index(root: Path | None = None) -> dict[str, Any]:
     path = store_path(root)
     if not path.exists():
-        return {"snapshots": [], "learnings": {}, "updated_at": None}
+        return {"snapshots": [], "learnings": {}, "records": {}, "updated_at": None}
     data = json.loads(path.read_text(encoding="utf-8"))
     data.setdefault("snapshots", [])
     data.setdefault("learnings", {})
+    data.setdefault("records", {})
     return data
 
 

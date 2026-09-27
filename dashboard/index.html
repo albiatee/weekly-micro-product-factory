@@ -129,6 +129,8 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:v
     <button type="button" data-panel="signals">Signals</button>
 
     <button type="button" data-panel="knowledge">Knowledge</button>
+    <button type="button" data-panel="analytics">Analytics</button>
+    <button type="button" data-panel="learning">Learning</button>
 
   </aside>
 
@@ -261,6 +263,24 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:v
 
 
 
+
+
+    <section id="panel-analytics" class="panel">
+      <h2 style="margin-bottom:.75rem">Analytics (P7)</h2>
+      <div class="card">
+        <p class="muted">نتائج مُدخَلة محلياً فقط — ليست أدلة سوق مخترعة. API: GET /analytics</p>
+        <pre class="cmd">curl -s http://127.0.0.1:8000/analytics</pre>
+        <div id="analyticsBox" class="muted">شغّل API ثم حدّث الصفحة أو استخدم curl.</div>
+      </div>
+    </section>
+    <section id="panel-learning" class="panel">
+      <h2 style="margin-bottom:.75rem">Learning (P7)</h2>
+      <div class="card">
+        <p class="muted">ملاحظات ودروس حتمية من Analytics. استشاري فقط — لا يرفض أفكاراً.</p>
+        <pre class="cmd">curl -s http://127.0.0.1:8000/learning</pre>
+        <div id="learningBox" class="muted">GET /learning</div>
+      </div>
+    </section>
 
     <section id="panel-knowledge" class="panel">
 
@@ -605,6 +625,36 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:v
   }
 
 
+
+
+  function loadP7() {
+    fetch('http://127.0.0.1:8000/analytics').then(function(r){return r.json()}).then(function(d){
+      var el = document.getElementById('analyticsBox');
+      if (!el) return;
+      var items = d.items || {};
+      var keys = Object.keys(items);
+      var withM = keys.filter(function(k){ return items[k].status === 'recorded'; }).length;
+      var without = keys.filter(function(k){ return items[k].status === 'not_available'; }).length;
+      el.innerHTML = '<p>سجلات: ' + keys.length + ' · مع نتائج: ' + withM + ' · بدون: ' + without + '</p>' +
+        keys.slice(0,8).map(function(k){
+          var a = items[k];
+          return '<div class="card"><h3>' + escapeHtml(k) + '</h3><div class="row">' +
+            tag(a.status||'') + tag(a.build_id||a.product_id||'—') + '</div></div>';
+        }).join('');
+    }).catch(function(){});
+    fetch('http://127.0.0.1:8000/learning').then(function(r){return r.json()}).then(function(d){
+      var el = document.getElementById('learningBox');
+      if (!el) return;
+      var items = d.items || {};
+      el.innerHTML = Object.keys(items).slice(0,8).map(function(k){
+        var L = items[k];
+        return '<div class="card"><h3>' + escapeHtml(k) + '</h3><div class="row">' +
+          tag(L.confidence||'') + tag(L.opportunity_id||'') + '</div><p class="muted">' +
+          escapeHtml((L.lessons||[]).join(' | ')) + '</p></div>';
+      }).join('') || '<p class="empty">لا سجلات تعلم بعد.</p>';
+    }).catch(function(){});
+  }
+  loadP7();
 
   fetch('data.json?_=' + Date.now())
 
