@@ -17,6 +17,7 @@ class CycleContext:
     decisions_root: Path | None = None
     cycles_root: Path | None = None
     force_enabled: bool = False  # tests only
+    persist: bool = True
     signal_ids: list[str] = field(default_factory=list)
     opportunity_ids: list[str] = field(default_factory=list)
     experiment_ids: list[str] = field(default_factory=list)

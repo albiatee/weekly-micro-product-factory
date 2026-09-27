@@ -179,3 +179,11 @@ See [`docs/P2_DASHBOARD.md`](P2_DASHBOARD.md) and [`dashboard/`](../dashboard/).
 
 - Rebuild: `python scripts/build_dashboard_data.py`
 - UI reads `dashboard/data.json` only (real snapshot, not live DB)
+
+
+## 17. Backend API P3
+
+See [`docs/P3_BACKEND_API.md`](P3_BACKEND_API.md).
+
+- Local-only (`127.0.0.1`); no live cycle via API
+- Read endpoints over Factory stores; `POST /cycles/dry-run` only for orchestration

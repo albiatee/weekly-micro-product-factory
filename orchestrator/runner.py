@@ -77,7 +77,8 @@ def _step_opportunity(ctx: CycleContext) -> None:
     # Cap generation volume for safety in a cycle
     to_gen = to_gen[: int(ctx.config.get("max_opportunities_per_cycle", 1)) * 3]
 
-    if to_gen:
+    # dry-run must not mutate opportunity store (API / inspection safety)
+    if to_gen and not ctx.dry_run:
         res = generate_from_signal_ids(
             to_gen,
             signals_root=ctx.signals_root,
@@ -88,6 +89,8 @@ def _step_opportunity(ctx: CycleContext) -> None:
         for item in res.accepted:
             oid = item["opportunity"]["id"]
             generated_ids.append(oid)
+    elif to_gen and ctx.dry_run:
+        generated_ids = []  # skipped writes
 
     existing = list_opportunities(ctx.opportunities_root)
     ctx.opportunity_ids = list(existing.keys())
@@ -167,7 +170,11 @@ def _step_decide(ctx: CycleContext) -> None:
     # Persist Decision only when we have a terminal verdict with completed experiment
     # and not dry-run policy-only — actually dry-run may still write decision for audit
     # Contract: dry_run should avoid produce/publish; Decision record is OK for audit if enabled
-    write_decision = result.verdict in ("execute", "iterate", "kill") and exp
+    write_decision = (
+        result.verdict in ("execute", "iterate", "kill")
+        and exp
+        and (not ctx.dry_run or ctx.persist)
+    )
     decision_id = None
     if write_decision and exp and oid:
         metrics = None
@@ -288,6 +295,7 @@ def run_cycle(
         decisions_root=decisions_root,
         cycles_root=cycles_root,
         force_enabled=force_enabled,
+        persist=persist,
     )
 
     plan = steps_until(ctx.stop_after)
