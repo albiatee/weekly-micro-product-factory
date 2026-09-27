@@ -1,6 +1,6 @@
 # P4 — Knowledge & Similarity Layer v0.1
 
-**Status:** Implemented  
+**Status:** Implemented
 **Role:** Advisory information only — **never** a decision, block, or approval.
 
 ## Purpose
