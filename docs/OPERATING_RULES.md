@@ -220,3 +220,11 @@ See [`docs/P7_ANALYTICS_LEARNING.md`](P7_ANALYTICS_LEARNING.md).
 
 - Metrics are user/system supplied only — never fabricated
 - Learning is advisory; does not reject similar ideas
+
+
+## 22. Closed Autonomous Loop P8
+
+See [`docs/P8_CLOSED_AUTONOMOUS_LOOP.md`](P8_CLOSED_AUTONOMOUS_LOOP.md).
+
+- Hierarchy: Kill Switch → Guardrails → Policy → Orchestrator → P0–P7 → LLM proposals
+- No public publish; dry-run default for safety

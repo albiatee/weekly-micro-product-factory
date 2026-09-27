@@ -131,6 +131,7 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:v
     <button type="button" data-panel="knowledge">Knowledge</button>
     <button type="button" data-panel="analytics">Analytics</button>
     <button type="button" data-panel="learning">Learning</button>
+    <button type="button" data-panel="factory-loop">Factory Loop</button>
 
   </aside>
 
@@ -264,6 +265,18 @@ footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:v
 
 
 
+
+
+    <section id="panel-factory-loop" class="panel">
+      <h2 style="margin-bottom:.75rem">Factory Loop (P8)</h2>
+      <div class="card">
+        <p class="muted">دورة مغلقة محلية. القرار عبر Policy+Guardrails فقط. لا نشر عام.</p>
+        <pre class="cmd">python scripts/run_factory.py --dry-run
+curl -s -X POST http://127.0.0.1:8000/cycles/run -H 'Content-Type: application/json' -d '{"dry_run":true}'</pre>
+        <p class="muted">Timeline: discover → opportunity → experiment → decide → build → measure → learn</p>
+        <div id="loopBox" class="muted">GET /cycles عبر data.json أو API cycles</div>
+      </div>
+    </section>
 
     <section id="panel-analytics" class="panel">
       <h2 style="margin-bottom:.75rem">Analytics (P7)</h2>

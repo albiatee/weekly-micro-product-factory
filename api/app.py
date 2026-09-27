@@ -387,6 +387,43 @@ def post_analytics_record(body: AnalyticsRecordRequest) -> dict[str, Any]:
     return out
 
 
+
+
+class CycleRunRequest(BaseModel):
+    dry_run: bool = True
+    opportunity_id: str | None = None
+    metrics: dict[str, Any] | None = None
+    force_enabled: bool = False
+
+
+@app.post("/cycles/run")
+def cycles_run(body: CycleRunRequest) -> dict[str, Any]:
+    """P8 closed loop — local only. Default dry_run=True. No public publish."""
+    from orchestrator.closed_loop import run_closed_loop
+
+    res = run_closed_loop(
+        dry_run=body.dry_run,
+        opportunity_id=body.opportunity_id,
+        metrics=body.metrics,
+        force_enabled=body.force_enabled,
+        persist=False if body.dry_run else True,
+        signals_root=get_root() / "data" / "signals",
+        opportunities_root=get_root() / "data" / "opportunities",
+        experiments_root=get_root() / "data" / "experiments",
+        decisions_root=get_root() / "data" / "decisions",
+        production_root=get_root() / "data" / "production",
+        builds_root=get_root() / "data" / "builds",
+        analytics_root=get_root() / "data" / "analytics",
+        cycles_root=get_root() / "data" / "cycles",
+    )
+    return {
+        "ok": res.ok,
+        "errors": res.errors,
+        "cycle": res.cycle,
+        "live_publish": False,
+    }
+
+
 @app.post("/cycles/live")
 def post_cycles_live_forbidden() -> None:
     """Explicitly blocked — no live execution via API v0.1."""
