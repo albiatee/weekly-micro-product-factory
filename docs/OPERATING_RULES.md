@@ -1,6 +1,6 @@
 # Operating Rules — تشغيل المستودع
 
-> مثبتة بعد مراجعة المستودع + دورة RSS الأولى (2026-09).  
+> مثبتة بعد مراجعة المستودع + دورة RSS الأولى (2026-09).
 > الهدف: منع تحويل الضوضاء إلى Opportunities.
 
 ## 1. هويتان، مساران
@@ -195,3 +195,12 @@ See [`docs/P4_KNOWLEDGE_SIMILARITY.md`](P4_KNOWLEDGE_SIMILARITY.md).
 
 - Similarity is **advisory only** — never approve/reject ideas automatically
 - Read-only over Factory history; no store mutation
+
+
+## 19. Experiment Runner P5
+
+See [`docs/P5_EXPERIMENT_RUNNER.md`](P5_EXPERIMENT_RUNNER.md).
+
+- Limited local artifacts + explicit metrics only
+- Policy evaluation after complete is **advisory**
+- No public publish and no Path A build from the runner

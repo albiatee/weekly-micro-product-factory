@@ -202,6 +202,68 @@ def knowledge_compare(
 
     return compare_idea(q, limit=limit, root=get_root())
 
+
+
+class ExperimentRunRequest(BaseModel):
+    opportunity_id: str
+    experiment_type: str = "smoke_page"
+    metrics: dict[str, Any] | None = None
+    dry_run: bool = False
+
+
+@app.post("/experiments/run")
+def experiments_run(body: ExperimentRunRequest) -> dict[str, Any]:
+    """Limited experiment runner. Does not publish or bypass Policy."""
+    from experiment.runner import run_experiment
+
+    res = run_experiment(
+        body.opportunity_id,
+        experiment_type=body.experiment_type,
+        metrics=body.metrics,
+        dry_run=body.dry_run,
+        opportunities_root=get_root() / "data" / "opportunities",
+        experiments_root=get_root() / "data" / "experiments",
+        runs_root=get_root() / "data" / "experiment_runs",
+    )
+    return {
+        "ok": res.ok,
+        "errors": res.errors,
+        "notes": res.notes,
+        "experiment": res.experiment,
+        "run_dir": res.run_dir,
+        "artifact_path": res.artifact_path,
+        "metrics": res.metrics,
+        "policy": res.policy,
+        "live_publish": False,
+    }
+
+
+class ExperimentCompleteRequest(BaseModel):
+    experiment_id: str
+    metrics: dict[str, Any]
+
+
+@app.post("/experiments/complete")
+def experiments_complete(body: ExperimentCompleteRequest) -> dict[str, Any]:
+    from experiment.runner import complete_with_metrics
+
+    res = complete_with_metrics(
+        body.experiment_id,
+        body.metrics,
+        opportunities_root=get_root() / "data" / "opportunities",
+        experiments_root=get_root() / "data" / "experiments",
+        runs_root=get_root() / "data" / "experiment_runs",
+    )
+    return {
+        "ok": res.ok,
+        "errors": res.errors,
+        "experiment": res.experiment,
+        "metrics": res.metrics,
+        "policy": res.policy,
+        "live_publish": False,
+    }
+
+
 @app.post("/cycles/live")
 def post_cycles_live_forbidden() -> None:
     """Explicitly blocked — no live execution via API v0.1."""
