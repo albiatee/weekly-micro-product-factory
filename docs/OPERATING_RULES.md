@@ -187,3 +187,11 @@ See [`docs/P3_BACKEND_API.md`](P3_BACKEND_API.md).
 
 - Local-only (`127.0.0.1`); no live cycle via API
 - Read endpoints over Factory stores; `POST /cycles/dry-run` only for orchestration
+
+
+## 18. Knowledge & Similarity P4
+
+See [`docs/P4_KNOWLEDGE_SIMILARITY.md`](P4_KNOWLEDGE_SIMILARITY.md).
+
+- Similarity is **advisory only** — never approve/reject ideas automatically
+- Read-only over Factory history; no store mutation

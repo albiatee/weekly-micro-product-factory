@@ -13,7 +13,7 @@ from api.store_readers import list_products, project_root, read_index
 app = FastAPI(
     title="Factory Backend API",
     version="0.1.0",
-    description="P3 local-only read API over weekly-micro-product-factory stores.",
+    description="Local-only Factory API: read stores, dry-run, knowledge search (P3/P4).",
 )
 
 # Local dashboard only — not an open internet API
@@ -164,6 +164,43 @@ def post_cycles_dry_run(body: DryRunRequest | None = None) -> DryRunResponse:
 
     return DryRunResponse(ok=True, dry_run=True, live_forbidden=True, cycle=cycle)
 
+
+
+
+@app.get("/knowledge/search")
+def knowledge_search(
+    q: str = Query("", description="Idea or free-text query"),
+    limit: int = Query(10, ge=0, le=50),
+    min_score: float = Query(0.08, ge=0.0, le=1.0),
+    types: str | None = Query(
+        None,
+        description="Comma-separated entity types: signal,opportunity,experiment,decision,learning,product",
+    ),
+) -> dict[str, Any]:
+    """Advisory similarity search over real Factory history. Not a decision."""
+    from knowledge.search import search as knowledge_search_fn
+
+    entity_types = None
+    if types:
+        entity_types = [x.strip() for x in types.split(",") if x.strip()]
+    return knowledge_search_fn(
+        q,
+        entity_types=entity_types,
+        limit=limit,
+        min_score=min_score,
+        root=get_root(),
+    )
+
+
+@app.get("/knowledge/compare")
+def knowledge_compare(
+    q: str = Query(..., min_length=1, description="New idea text"),
+    limit: int = Query(5, ge=0, le=20),
+) -> dict[str, Any]:
+    """Compare a new idea to historical matches — informational only."""
+    from knowledge.search import compare_idea
+
+    return compare_idea(q, limit=limit, root=get_root())
 
 @app.post("/cycles/live")
 def post_cycles_live_forbidden() -> None:
