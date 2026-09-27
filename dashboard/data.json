@@ -1,0 +1,396 @@
+{
+  "generated_at": "2026-09-27T06:06:14Z",
+  "version": "p2.0.1",
+  "overview": {
+    "signals": 14,
+    "signals_qualified": 8,
+    "signals_review": 6,
+    "opportunities": 6,
+    "experiments": 0,
+    "decisions": 0,
+    "cycles": 1,
+    "products": 14
+  },
+  "signals": [
+    {
+      "id": "sig_0394902d2b924911",
+      "qualification_status": "qualified",
+      "intent_type": "workaround",
+      "evidence_strength": "strong",
+      "source": "manual",
+      "problem_statement": "On a single sales channel, inventory spreadsheets often start cracking around roughly 200 orders per month because daily manual updates lag.",
+      "url": "https://nventory.io/blog/spreadsheets-vs-oms-what-order-volume",
+      "sector": "ecommerce"
+    },
+    {
+      "id": "sig_3ce21f4b08ac4edf",
+      "qualification_status": "qualified",
+      "intent_type": "workaround",
+      "evidence_strength": "medium",
+      "source": "manual",
+      "problem_statement": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is static.",
+      "url": "https://canopyinventory.com/blog/why-spreadsheets-fail-inventory-management",
+      "sector": "ecommerce"
+    },
+    {
+      "id": "sig_45e05bb39bf34830",
+      "qualification_status": "review",
+      "intent_type": "unknown",
+      "evidence_strength": "weak",
+      "source": "manual",
+      "problem_statement": "Marketing teams managing multiple agencies spend large parts of the week coordinating: proposal reviews, reconciling deliverables, status calls and translating ",
+      "url": "https://locomotive.agency/blog/marketing-fragmentation-tax/",
+      "sector": "marketing_seo_content"
+    },
+    {
+      "id": "sig_46e0334adf1c4dee",
+      "qualification_status": "review",
+      "intent_type": "unknown",
+      "evidence_strength": "weak",
+      "source": "manual",
+      "problem_statement": "Marketing teams managing multiple agencies spend large parts of the week coordinating: proposal reviews, reconciling deliverables, status calls and translating ",
+      "url": "https://locomotive.agency/blog/marketing-fragmentation-tax/",
+      "sector": "marketing_seo_content"
+    },
+    {
+      "id": "sig_4a6b4ad583394a58",
+      "qualification_status": "review",
+      "intent_type": "unknown",
+      "evidence_strength": "weak",
+      "source": "manual",
+      "problem_statement": "SMB AI tool adoption shows a recurring pattern: roughly a third of paid tools are abandoned within about 60 days.",
+      "url": "https://www.reddit.com/r/AiForSmallBusiness/comments/1rjt5hy/the_ai_tool_graveyard_23_tools_smbs_paid_for_and",
+      "sector": "ai_sme_operations"
+    },
+    {
+      "id": "sig_554bd6d960544636",
+      "qualification_status": "qualified",
+      "intent_type": "workaround",
+      "evidence_strength": "strong",
+      "source": "manual",
+      "problem_statement": "Freelancers lose productive time to payment collection instead of billable work; published compilations cite on the order of 100 hours per year chasing overdue ",
+      "url": "https://agiled.app/statistics/late-payment-statistics",
+      "sector": "freelancer_professional_tools"
+    },
+    {
+      "id": "sig_56aff51496c749ab",
+      "qualification_status": "qualified",
+      "intent_type": "workaround",
+      "evidence_strength": "strong",
+      "source": "manual",
+      "problem_statement": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution.",
+      "url": "https://icowebsolutions.com/the-quiet-quitting-of-client-accounts-how-redundant-agency-reporting-kills-real-seo-velocity/",
+      "sector": "marketing_seo_content"
+    },
+    {
+      "id": "sig_771d0f932de2423c",
+      "qualification_status": "qualified",
+      "intent_type": "problem",
+      "evidence_strength": "medium",
+      "source": "manual",
+      "problem_statement": "Residential plumbing appointments without reminder systems commonly see no-show rates around 8–15 percent; automated reminder sequences (24-hour plus same-day) ",
+      "url": "https://exoserva.com/blog/plumbing-no-show-strategies",
+      "sector": "local_services"
+    },
+    {
+      "id": "sig_80a565bf0c9b4533",
+      "qualification_status": "review",
+      "intent_type": "unknown",
+      "evidence_strength": "weak",
+      "source": "manual",
+      "problem_statement": "HVAC residential service no-show rates without confirmation systems are often cited near 12–16 percent, falling under about 5 percent with a full three-touch re",
+      "url": "https://calljolt.com/blog/hvac/reducing-no-shows-and-cancellations",
+      "sector": "local_services"
+    },
+    {
+      "id": "sig_cf58b7867a9f4d2a",
+      "qualification_status": "review",
+      "intent_type": "unknown",
+      "evidence_strength": "weak",
+      "source": "manual",
+      "problem_statement": "Most freelancers experience late client payments at least occasionally; industry analyses commonly report that a large share of freelance invoices are paid past",
+      "url": "https://www.plutio.com/freelancer-magazine/late-invoice-payments",
+      "sector": "freelancer_professional_tools"
+    },
+    {
+      "id": "sig_d674be3c034a447d",
+      "qualification_status": "qualified",
+      "intent_type": "workaround",
+      "evidence_strength": "strong",
+      "source": "manual",
+      "problem_statement": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools.",
+      "url": "https://www.forbes.com/councils/forbesfinancecouncil/2025/07/28/the-real-cost-of-manual-accounting-for-smbs/",
+      "sector": "ai_sme_operations"
+    },
+    {
+      "id": "sig_d9b5f0e9419e4ed8",
+      "qualification_status": "qualified",
+      "intent_type": "workaround",
+      "evidence_strength": "strong",
+      "source": "manual",
+      "problem_statement": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools.",
+      "url": "https://www.forbes.com/councils/forbesfinancecouncil/2025/07/28/the-real-cost-of-manual-accounting-for-smbs/",
+      "sector": "ai_sme_operations"
+    },
+    {
+      "id": "sig_dfc8761eaa3344f0",
+      "qualification_status": "review",
+      "intent_type": "unknown",
+      "evidence_strength": "weak",
+      "source": "manual",
+      "problem_statement": "SMB AI tool adoption shows a recurring pattern: roughly a third of paid tools are abandoned within about 60 days.",
+      "url": "https://www.reddit.com/r/AiForSmallBusiness/comments/1rjt5hy/the_ai_tool_graveyard_23_tools_smbs_paid_for_and",
+      "sector": "ai_sme_operations"
+    },
+    {
+      "id": "sig_e17bdca2e0354531",
+      "qualification_status": "qualified",
+      "intent_type": "workaround",
+      "evidence_strength": "strong",
+      "source": "manual",
+      "problem_statement": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution.",
+      "url": "https://icowebsolutions.com/the-quiet-quitting-of-client-accounts-how-redundant-agency-reporting-kills-real-seo-velocity/",
+      "sector": "marketing_seo_content"
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "opp_242fbca1aecd4d30",
+      "title": "Small businesses still rely on spreadsheets for core financial functions despit…",
+      "status": "hypothesized",
+      "problem": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes c",
+      "audience": "core financial functions despite low-cost",
+      "signal_ids": [
+        "sig_d674be3c034a447d"
+      ],
+      "solution_type": "unknown"
+    },
+    {
+      "id": "opp_b054e38d314444ae",
+      "title": "Small businesses still rely on spreadsheets for core financial functions despit…",
+      "status": "hypothesized",
+      "problem": "Small businesses still rely on spreadsheets for core financial functions despite low-cost digital tools. Many owners end up doing books manually; paper checks, PDF invoices and slow vendor processes c",
+      "audience": "core financial functions despite low-cost",
+      "signal_ids": [
+        "sig_d9b5f0e9419e4ed8"
+      ],
+      "solution_type": "unknown"
+    },
+    {
+      "id": "opp_b0fe7637c4bd47ca",
+      "title": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data…",
+      "status": "hypothesized",
+      "problem": "SEO and marketing agencies burn billable hours on bloated PDF reporting — data extraction and formatting each month instead of technical execution. Velocity-first models claim far more hours can go to",
+      "audience": "unspecified (not stated in source signals)",
+      "signal_ids": [
+        "sig_56aff51496c749ab"
+      ],
+      "solution_type": "unknown"
+    },
+    {
+      "id": "opp_e66e9c4b59ec4350",
+      "title": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is stat…",
+      "status": "hypothesized",
+      "problem": "Ecommerce inventory spreadsheets fail as sales continue while the sheet is static. Brands with many SKUs, long supplier lead times or multiple channels (Shopify plus Amazon) face stockouts, oversellin",
+      "audience": "unspecified (not stated in source signals)",
+      "signal_ids": [
+        "sig_3ce21f4b08ac4edf"
+      ],
+      "solution_type": "unknown"
+    },
+    {
+      "id": "opp_f3f5fd84f70149b4",
+      "title": "Residential plumbing appointments without reminder systems commonly see no-show…",
+      "status": "hypothesized",
+      "problem": "Residential plumbing appointments without reminder systems commonly see no-show rates around 8–15 percent; automated reminder sequences (24-hour plus same-day) are reported to cut no-shows toward roug",
+      "audience": "small shops",
+      "signal_ids": [
+        "sig_771d0f932de2423c"
+      ],
+      "solution_type": "concierge"
+    },
+    {
+      "id": "opp_fa3528e9a5144d37",
+      "title": "On a single sales channel, inventory spreadsheets often start cracking around r…",
+      "status": "hypothesized",
+      "problem": "On a single sales channel, inventory spreadsheets often start cracking around roughly 200 orders per month because daily manual updates lag. With two channels, cross-channel sync must happen within mi",
+      "audience": "unspecified (not stated in source signals)",
+      "signal_ids": [
+        "sig_0394902d2b924911"
+      ],
+      "solution_type": "unknown"
+    }
+  ],
+  "experiments": [],
+  "cycles": [
+    {
+      "id": "cyc_adf14dfc6c52451f",
+      "status": "completed",
+      "dry_run": true,
+      "completed_steps": [
+        "COLLECT",
+        "QUALIFY",
+        "OPPORTUNITY",
+        "SELECT"
+      ],
+      "selection": {
+        "opportunity_ids": [
+          "opp_242fbca1aecd4d30"
+        ],
+        "scores": {
+          "opp_242fbca1aecd4d30": 131
+        }
+      },
+      "abort_reason": null,
+      "created_at": "2026-09-26T20:19:30Z"
+    }
+  ],
+  "products": [
+    {
+      "week": "2026-w56",
+      "title": "قائمة مهامك اليومية",
+      "description": "ابدأ يومك بطاقة إيجابية مع تطبيقنا البسيط الذي يتيح لك إضافة مهامك اليومية وتحديدها كمكتملة، مع إمكانية سحب وإعادة ترتيبها لتناسب أوقاتك. كل ذلك يعمل محليًا دون الحاجة للإنترنت، مما يضمن استمرارية إنتاجيتك أينما كنت. احصل على تحفيز يومي، وحقق أهدافك خطوة بخطوة!",
+      "path": "calculator",
+      "build_method": "ai_generated",
+      "href": "../products/weekly/2026-w56/",
+      "generated_at": "2026-09-17T19:05:05Z",
+      "diversity_score": 67.1
+    },
+    {
+      "week": "2026-w55",
+      "title": "منتج تجريبي",
+      "description": "وصف قصير للمنتج التجريبي",
+      "path": "calculator",
+      "build_method": "ai_generated",
+      "href": "../products/weekly/2026-w55/",
+      "generated_at": "2026-09-17T19:02:38Z",
+      "diversity_score": 72.0
+    },
+    {
+      "week": "2026-w54",
+      "title": "حاسبة بسيطة",
+      "description": "حاسبة أساسية للعمليات الأربع تعمل بدون إنترنت",
+      "path": "calculator",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w54/",
+      "generated_at": "2026-09-17T18:40:18Z",
+      "diversity_score": 73.3
+    },
+    {
+      "week": "2026-w53",
+      "title": "صفحة هبوط بسيطة",
+      "description": "صفحة هبوط خفيفة وسريعة متوافقة مع الهاتف",
+      "path": "landing-page",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w53/",
+      "generated_at": "2026-09-17T18:19:27Z",
+      "diversity_score": 62.0
+    },
+    {
+      "week": "2026-w52",
+      "title": "متتبع العادات الأسبوعي",
+      "description": "تتبع عادة واحدة على مدار 7 أيام مع حفظ محلي بدون إنترنت",
+      "path": "weekly-tracker",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w52/",
+      "generated_at": "2026-09-17T18:11:50Z",
+      "diversity_score": 81.7
+    },
+    {
+      "week": "2026-w51",
+      "title": "حاسبة بسيطة",
+      "description": "حاسبة أساسية للعمليات الأربع تعمل بدون إنترنت",
+      "path": "calculator",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w51/",
+      "generated_at": "2026-09-17T18:09:42Z",
+      "diversity_score": 73.5
+    },
+    {
+      "week": "2026-w50",
+      "title": "بطاقة شكر بسيطة",
+      "description": "صمم بطاقة شكر فريدة في صفحة واحدة، حيث يكتب المستخدم رسالة قصيرة مع اسم المستلم، ويضيف صورة أو رسمة بسحب وإفلات. التصميم هادئ وأنيق يبرز تقديرك، مع شريط ترويسة ثابت، قسم إدخال، زر إرسال، وتذييل بسيط مع روابط اجتماعية. استمتع بلمسة شخصية تُظهر الامتنان بوضوح وتلهم السعادة.",
+      "path": "landing-page",
+      "build_method": "ai_generated",
+      "href": "../products/weekly/2026-w50/",
+      "generated_at": "2026-09-17T16:51:53Z",
+      "diversity_score": 66.5
+    },
+    {
+      "week": "2026-w49",
+      "title": "مؤقت شاي",
+      "description": "استعد لتجربة شاي لا تُنسى مع مؤقت شاي البسيط الذي يضبطك على ثلاث دقائق مثالية! فقط اضغط زر البداية، ودع العد التنازلي يُظهر لك الوقت المتبقي، مع إشعار بصري يثير حماسك عند الانتهاء. لا تحتاج لأزرار إضافية، فقط تركيز كامل على اللحظة. احصل على شاي مثالي، سريع، وممتع—كل ذلك مع تصميم بسيط يركز على الأداء والراحة.",
+      "path": "weekly-tracker",
+      "build_method": "ai_generated",
+      "href": "../products/weekly/2026-w49/",
+      "generated_at": "2026-09-17T16:49:51Z",
+      "diversity_score": null
+    },
+    {
+      "week": "2026-w48",
+      "title": "قائمة النقود",
+      "description": "صفحة بسيطة تساعدك على تسجيل وإدارة نصائح الزبائن في مقهى صغير بدون اتصال بالإنترنت. كل ما تحتاجه هو إدخال المبالغ في الجدول، وسيحسب الرصيد تلقائياً. يمكنك حفظ البيانات محلياً في المتصفح أو إعادة تعيينها عند الحاجة. سهلة الاستخدام، سريعة، ومصممة خصيصاً لتلبية احتياجاتك اليومية.",
+      "path": "calculator",
+      "build_method": "ai_generated",
+      "href": "../products/weekly/2026-w48/",
+      "generated_at": "2026-09-17T16:42:30Z",
+      "diversity_score": null
+    },
+    {
+      "week": "2026-w46",
+      "title": "صفحة هبوط بسيطة",
+      "description": "صفحة هبوط خفيفة وسريعة متوافقة مع الهاتف",
+      "path": "landing-page",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w46/",
+      "generated_at": "2026-09-17T16:39:15Z",
+      "diversity_score": null
+    },
+    {
+      "week": "2026-w45",
+      "title": "صفحة هبوط بسيطة",
+      "description": "صفحة هبوط خفيفة وسريعة متوافقة مع الهاتف",
+      "path": "landing-page",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w45/",
+      "generated_at": "2026-09-17T16:37:31Z",
+      "diversity_score": null
+    },
+    {
+      "week": "2026-w39",
+      "title": "صفحة هبوط بسيطة",
+      "description": "صفحة هبوط خفيفة وسريعة متوافقة مع الهاتف",
+      "path": "landing-page",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w39/",
+      "generated_at": "2026-09-17T14:17:08Z",
+      "diversity_score": null
+    },
+    {
+      "week": "2026-w38-i1",
+      "title": "بطاقة تهنئة عيد الفطر",
+      "description": "بطاقة تهنئة فطرية فاخرة، تتيح لك كتابة اسم المستلم ورسالة دافئة، مع تصميم احتفالي يشرق بألوان الفرح. تُعرض على ورق فخم مع زخارف دقيقة، وتتحكم فيها لوحة تحكم طافية تُبقي التصميم مركزاً. تُزامن النصوص لحظياً، ويمكنك حفظ البطاقة كصورة أو نسخها دون الحاجة للإنترنت. تجربة شخصية ومبهجة تُقدّم أجواءً من الألفة والبهجة.",
+      "path": "landing-page",
+      "build_method": "ai_generated",
+      "href": "../products/weekly/2026-w38-i1/",
+      "generated_at": "2026-09-17T16:08:19Z",
+      "diversity_score": null
+    },
+    {
+      "week": "2026-w38",
+      "title": "حاسبة بسيطة",
+      "description": "حاسبة أساسية للعمليات الأربع تعمل بدون إنترنت",
+      "path": "calculator",
+      "build_method": "deterministic",
+      "href": "../products/weekly/2026-w38/",
+      "generated_at": "2026-09-17T14:19:22Z",
+      "diversity_score": null
+    }
+  ],
+  "actions": {
+    "dry_run_cli": "python scripts/run_orchestrator_cycle.py --dry-run --stop-after SELECT",
+    "rebuild_dashboard": "python scripts/build_dashboard_data.py",
+    "new_idea": "GitHub Issues → قالب فكرة منتج جديد",
+    "orchestrator_enabled_default": false
+  }
+}

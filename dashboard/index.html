@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة التحكم — مصنع الفرص والمنتجات</title>
+<style>
+:root{
+  --bg:#0b1220;--panel:#121a2b;--card:#151e2e;--line:#243044;
+  --text:#e8eef7;--muted:#94a3b8;--accent:#38bdf8;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+@media(max-width:800px){.shell{grid-template-columns:1fr}.nav{position:sticky;top:0;z-index:5;border-left:none;border-bottom:1px solid var(--line)}}
+.nav{background:var(--panel);border-left:1px solid var(--line);padding:1rem .85rem}
+.nav .brand{font-weight:700;font-size:1rem;margin-bottom:.35rem}
+.nav .sub{color:var(--muted);font-size:.75rem;margin-bottom:1rem}
+.nav button{display:block;width:100%;text-align:right;background:transparent;border:1px solid transparent;color:var(--text);padding:.55rem .65rem;border-radius:10px;margin-bottom:.25rem;cursor:pointer;font:inherit}
+.nav button.active,.nav button:hover{background:#1a2740;border-color:#2b3c5a}
+.main{padding:1.25rem 1.25rem 2.5rem}
+.top{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:space-between;align-items:center;margin-bottom:1rem}
+h1{font-size:1.35rem}
+.badge{display:inline-block;background:#1e3a5f;color:var(--accent);font-size:.72rem;padding:.15rem .5rem;border-radius:999px}
+.muted{color:var(--muted);font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.7rem;margin:1rem 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem;text-align:center}
+.stat .n{font-size:1.7rem;font-weight:700;color:var(--accent)}
+.stat .l{font-size:.78rem;color:var(--muted);margin-top:.2rem}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem;margin-bottom:.7rem}
+.card h3{font-size:1rem;margin-bottom:.3rem}
+.row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+.tag{background:#1e3a5f;color:var(--accent);font-size:.72rem;padding:.15rem .45rem;border-radius:999px}
+.tag.warn{background:#3b2f12;color:var(--warn)}
+.tag.ok{background:#0f2e24;color:var(--ok)}
+.tag.bad{background:#3a1a1a;color:var(--bad)}
+.actions{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.btn{display:inline-block;border:1px solid #334155;background:#1a2740;color:var(--text);padding:.55rem .9rem;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer}
+.btn.primary{background:var(--accent);color:#0b1220;border-color:transparent}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+pre.cmd{background:#0a101c;border:1px solid var(--line);border-radius:10px;padding:.75rem;overflow:auto;font-size:.8rem;direction:ltr;text-align:left;margin:.5rem 0}
+.err{color:var(--bad);margin:1rem 0}
+.table{width:100%;border-collapse:collapse;font-size:.88rem}
+.table th,.table td{border-bottom:1px solid var(--line);padding:.5rem .35rem;text-align:right;vertical-align:top}
+.table th{color:var(--muted);font-weight:600}
+.empty{color:var(--muted);padding:1rem 0}
+footer{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="brand">🎛️ Control Hub</div>
+    <div class="sub">P2 v0.1 · بيانات حقيقية</div>
+    <button type="button" data-panel="overview" class="active">Overview</button>
+    <button type="button" data-panel="ideas">Ideas</button>
+    <button type="button" data-panel="opportunities">Opportunities</button>
+    <button type="button" data-panel="experiments">Experiments</button>
+    <button type="button" data-panel="products">Products</button>
+    <button type="button" data-panel="cycles">Cycles</button>
+    <button type="button" data-panel="signals">Signals</button>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div>
+        <h1>لوحة التحكم — المصنع</h1>
+        <p class="muted" id="generatedAt">جاري تحميل data.json…</p>
+      </div>
+      <div class="actions">
+        <a class="btn" href="../">الصفحة الرئيسية</a>
+        <a class="btn" href="../stats/">إحصائيات Path A</a>
+      </div>
+    </div>
+    <div id="loadError" class="err" hidden></div>
+
+    <section id="panel-overview" class="panel active">
+      <div class="grid" id="overviewStats"></div>
+      <div class="card">
+        <h3>ماذا تعرض هذه اللوحة؟</h3>
+        <p class="muted">تقرأ لقطة مجمّعة من مخازن الـFactory (`data/*` + `products/weekly`) عبر <code>dashboard/data.json</code>. ليست أرقاماً وهمية.</p>
+        <p class="muted" style="margin-top:.5rem">الأتمتة الحية مغلقة افتراضياً (`orchestrator_enabled: false`). التشغيل من اللوحة هنا = عرض + أوامر CLI للنسخ.</p>
+      </div>
+    </section>
+
+    <section id="panel-ideas" class="panel">
+      <div class="card">
+        <h3>أفكار جديدة (Path A)</h3>
+        <p class="muted">تقديم فكرة منتج يمر عبر GitHub Issues ثم triage والإنتاج الأسبوعي.</p>
+        <div class="actions">
+          <a class="btn primary" id="newIdeaLink" href="../issues/new/choose" target="_blank" rel="noopener">+ New Idea (GitHub Issues)</a>
+        </div>
+        <p class="muted">بعد القبول والتصويت تُنتج في <code>products/weekly/</code> وتظهر تحت Products.</p>
+      </div>
+      <div class="card">
+        <h3>مسار الفرص (Path B)</h3>
+        <p class="muted">الإشارات والفرص لا تُنشأ من زر «فكرة» — تُجمع عبر Discovery ثم Quality. استخدم Signals / Opportunities للمراقبة.</p>
+      </div>
+    </section>
+
+    <section id="panel-opportunities" class="panel">
+      <h2 style="margin-bottom:.75rem">Opportunities</h2>
+      <div id="oppList"></div>
+    </section>
+
+    <section id="panel-experiments" class="panel">
+      <h2 style="margin-bottom:.75rem">Experiments</h2>
+      <div id="expList"></div>
+    </section>
+
+    <section id="panel-products" class="panel">
+      <h2 style="margin-bottom:.75rem">Products</h2>
+      <div id="prodList"></div>
+    </section>
+
+    <section id="panel-cycles" class="panel">
+      <h2 style="margin-bottom:.75rem">Cycles</h2>
+      <div class="card">
+        <h3>تشغيل (من المستودع محلياً)</h3>
+        <p class="muted">اللوحة على GitHub Pages لا تشغّل الـOrchestrator مباشرة (لا خادم). انسخ الأمر:</p>
+        <pre class="cmd" id="dryRunCmd">python scripts/run_orchestrator_cycle.py --dry-run --stop-after SELECT</pre>
+        <pre class="cmd">python scripts/build_dashboard_data.py</pre>
+        <p class="muted">ثم أعد رفع/تحديث <code>dashboard/data.json</code> لترى الدورة هنا.</p>
+      </div>
+      <div id="cycleList"></div>
+    </section>
+
+    <section id="panel-signals" class="panel">
+      <h2 style="margin-bottom:.75rem">Signals</h2>
+      <div id="sigList"></div>
+    </section>
+
+    <footer>
+      P2 Control Hub · يحدّث عبر <code>scripts/build_dashboard_data.py</code> · لا يدّعي تحقق سوق أو أتمتة كاملة
+    </footer>
+  </main>
+</div>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const panels = document.querySelectorAll('.panel');
+  const navBtns = document.querySelectorAll('.nav button[data-panel]');
+
+  function showPanel(name) {
+    panels.forEach((p) => p.classList.toggle('active', p.id === 'panel-' + name));
+    navBtns.forEach((b) => b.classList.toggle('active', b.getAttribute('data-panel') === name));
+  }
+  navBtns.forEach((b) => b.addEventListener('click', () => showPanel(b.getAttribute('data-panel'))));
+
+  function tag(text, cls) {
+    return '<span class="tag' + (cls ? ' ' + cls : '') + '">' + escapeHtml(text) + '</span>';
+  }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function renderOverview(d) {
+    const o = d.overview || {};
+    const items = [
+      ['Signals', o.signals],
+      ['Qualified', o.signals_qualified],
+      ['Review', o.signals_review],
+      ['Opportunities', o.opportunities],
+      ['Experiments', o.experiments],
+      ['Cycles', o.cycles],
+      ['Products', o.products],
+      ['Decisions', o.decisions],
+    ];
+    $('overviewStats').innerHTML = items.map(([l, n]) =>
+      '<div class="stat"><div class="n">' + escapeHtml(n ?? 0) + '</div><div class="l">' + escapeHtml(l) + '</div></div>'
+    ).join('');
+  }
+
+  function renderOpps(list) {
+    const el = $('oppList');
+    if (!list || !list.length) {
+      el.innerHTML = '<p class="empty">لا توجد Opportunities في المخزن.</p>';
+      return;
+    }
+    el.innerHTML = list.map((o) =>
+      '<div class="card"><h3>' + escapeHtml(o.title || o.id) + '</h3>' +
+      '<div class="row">' + tag(o.id) + tag(o.status || '—') +
+      (o.solution_type ? tag(o.solution_type) : '') + '</div>' +
+      '<p class="muted" style="margin-top:.5rem">' + escapeHtml(o.problem || '') + '</p>' +
+      '<p class="muted">جمهور: ' + escapeHtml(o.audience || '—') +
+      ' · signals: ' + escapeHtml((o.signal_ids || []).join(', ') || '—') + '</p></div>'
+    ).join('');
+  }
+
+  function renderExps(list) {
+    const el = $('expList');
+    if (!list || !list.length) {
+      el.innerHTML = '<p class="empty">لا تجارب مسجّلة بعد (0). هذا متوقع قبل P5 Experiment Runner.</p>';
+      return;
+    }
+    el.innerHTML = '<table class="table"><thead><tr><th>ID</th><th>Opportunity</th><th>Status</th><th>Type</th></tr></thead><tbody>' +
+      list.map((e) => '<tr><td>' + escapeHtml(e.id) + '</td><td>' + escapeHtml(e.opportunity_id) +
+        '</td><td>' + escapeHtml(e.status) + '</td><td>' + escapeHtml(e.experiment_type) + '</td></tr>').join('') +
+      '</tbody></table>';
+  }
+
+  function renderProducts(list) {
+    const el = $('prodList');
+    if (!list || !list.length) {
+      el.innerHTML = '<p class="empty">لا منتجات في products/weekly.</p>';
+      return;
+    }
+    el.innerHTML = list.map((p) =>
+      '<div class="card"><h3>' + escapeHtml(p.title) + '</h3>' +
+      '<div class="row">' + tag(p.week) + tag(p.build_method || '—') +
+      (p.diversity_score != null ? tag('diversity ' + p.diversity_score) : '') + '</div>' +
+      '<p class="muted" style="margin-top:.4rem">' + escapeHtml(p.description || '') + '</p>' +
+      '<div class="actions"><a class="btn primary" href="' + escapeHtml(p.href) + '">Preview / Open</a></div></div>'
+    ).join('');
+  }
+
+  function renderCycles(list, actions) {
+    if (actions && actions.dry_run_cli) {
+      $('dryRunCmd').textContent = actions.dry_run_cli;
+    }
+    const el = $('cycleList');
+    if (!list || !list.length) {
+      el.innerHTML = '<p class="empty">لا دورات بعد. شغّل dry-run من CLI ثم أعد بناء data.json.</p>';
+      return;
+    }
+    el.innerHTML = list.map((c) =>
+      '<div class="card"><h3>' + escapeHtml(c.id) + '</h3>' +
+      '<div class="row">' + tag(c.status || '—', c.status === 'completed' ? 'ok' : '') +
+      tag(c.dry_run ? 'dry-run' : 'live', c.dry_run ? 'warn' : 'bad') + '</div>' +
+      '<p class="muted" style="margin-top:.4rem">خطوات: ' + escapeHtml((c.completed_steps || []).join(' → ') || '—') + '</p>' +
+      '<p class="muted">اختيار: ' + escapeHtml(JSON.stringify(c.selection || {})) + '</p>' +
+      (c.abort_reason ? '<p class="err">' + escapeHtml(c.abort_reason) + '</p>' : '') +
+      '</div>'
+    ).join('');
+  }
+
+  function renderSignals(list) {
+    const el = $('sigList');
+    if (!list || !list.length) {
+      el.innerHTML = '<p class="empty">لا إشارات.</p>';
+      return;
+    }
+    el.innerHTML = list.map((s) =>
+      '<div class="card"><h3>' + escapeHtml(s.problem_statement || s.id) + '</h3>' +
+      '<div class="row">' + tag(s.qualification_status || '—', s.qualification_status === 'qualified' ? 'ok' : 'warn') +
+      tag(s.intent_type || '—') + tag(s.evidence_strength || '—') +
+      (s.sector ? tag(s.sector) : '') + '</div>' +
+      (s.url ? '<p style="margin-top:.4rem"><a href="' + escapeHtml(s.url) + '" target="_blank" rel="noopener">المصدر</a></p>' : '') +
+      '</div>'
+    ).join('');
+  }
+
+  fetch('data.json?_=' + Date.now())
+    .then((r) => {
+      if (!r.ok) throw new Error('تعذر تحميل data.json (' + r.status + ')');
+      return r.json();
+    })
+    .then((d) => {
+      $('generatedAt').textContent = 'آخر تجميع: ' + (d.generated_at || '—') + ' · ' + (d.version || '');
+      renderOverview(d);
+      renderOpps(d.opportunities);
+      renderExps(d.experiments);
+      renderProducts(d.products);
+      renderCycles(d.cycles, d.actions);
+      renderSignals(d.signals);
+      // Fix Issues link if we know repo from location
+      try {
+        const host = location.hostname;
+        if (host.endsWith('github.io')) {
+          const user = host.split('.')[0];
+          const parts = location.pathname.split('/').filter(Boolean);
+          const repo = parts[0] || 'weekly-micro-product-factory';
+          $('newIdeaLink').href = 'https://github.com/' + user + '/' + repo + '/issues/new/choose';
+        }
+      } catch (e) {}
+    })
+    .catch((e) => {
+      $('loadError').hidden = false;
+      $('loadError').textContent = String(e.message || e);
+    });
+})();
+</script>
+</body>
+</html>

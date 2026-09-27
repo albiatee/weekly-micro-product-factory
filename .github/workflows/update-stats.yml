@@ -32,18 +32,19 @@ jobs:
           TELEGRAM_CONFIGURED: ${{ vars.TELEGRAM_ENABLED || 'false' }}
         run: |
           python scripts/generate_stats.py
-          ls -la stats/
-          wc -c stats/index.html
+          python scripts/build_dashboard_data.py
+          ls -la stats/ dashboard/
+          wc -c stats/index.html dashboard/data.json
 
       - name: Commit and push
         run: |
           git config user.name "Micro Product Factory"
           git config user.email "factory@users.noreply.github.com"
-          git add stats/index.html
+          git add stats/index.html dashboard/data.json dashboard/index.html
           if git diff --staged --quiet; then
             echo "No stats changes"
             exit 0
           fi
-          git commit -m "docs(stats): refresh community dashboard"
+          git commit -m "docs(stats): refresh community dashboard and control hub data"
           git pull --rebase origin main || true
           git push origin main

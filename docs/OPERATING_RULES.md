@@ -171,3 +171,11 @@ See [`docs/P1_ORCHESTRATOR.md`](P1_ORCHESTRATOR.md).
 - Default: `orchestrator_enabled=false` and CLI `--dry-run`
 - Policy authorizes; Guardrails block side effects; Orchestrator only sequences
 - Do not set `ORCHESTRATOR_ENABLED=true` until whitelist and budgets are reviewed
+
+
+## 16. Dashboard P2
+
+See [`docs/P2_DASHBOARD.md`](P2_DASHBOARD.md) and [`dashboard/`](../dashboard/).
+
+- Rebuild: `python scripts/build_dashboard_data.py`
+- UI reads `dashboard/data.json` only (real snapshot, not live DB)
