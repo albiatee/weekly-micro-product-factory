@@ -1,0 +1,28 @@
+{
+  "week": "2026-w44",
+  "title": "منصة التكوين التجريبي",
+  "description": "توفر المنصة بيئة عمل مقسمة لإعداد وتخصيص معلمات النظام البرمجية بصورة متزامنة. تتيح لك مساحة العمل ضبط المتغيرات عبر مسار خطوة بخطوة مع شريط أدوات جانبي للتحكم المباشر. يتم تفعيل الخيارات فورياً عبر مفاتيح التبديل المنطقية، مع حفظ تلقائي مستمر للحالة في السجل المحلي دون فقدان للبيانات، مما يسرّع فحص وتدقيق النماذج الأولية بدقة تقنية وموثوقية عالية.",
+  "path": "calculator",
+  "build_method": "ai_generated",
+  "generated_at": "2026-10-31T01:56:48Z",
+  "source_issue_number": null,
+  "lang": "ar",
+  "quality_score": null,
+  "diversity_score": 68.4,
+  "critic_score": 8.5,
+  "critic_verdict": "approved",
+  "critic_report": {
+    "score": 8.5,
+    "verdict": "approved",
+    "issues": [],
+    "suggestions": [
+      "التأكد من دعم الشاشات الصغيرة (Responsive Breakpoint) لتحويل الشاشة المقسمة (Split Screen) إلى عمود رأسي متتابع عند العرض على الهواتف المحمولة."
+    ]
+  },
+  "diversity_components": {
+    "color": 70.6,
+    "structure": 50.0,
+    "text": 98.9,
+    "type": 50.0
+  }
+}

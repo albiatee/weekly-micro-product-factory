@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة التكوين التجريبي</title>
+  <style>
+    :root {
+      --color-primary: #4A154B;
+      --color-accent: #E01E5A;
+      --color-highlight: #ECB22E;
+      --color-dark: #1F0721;
+      --color-surface: #2A0E2B;
+      --color-panel: #18051A;
+      --color-border: #5C255D;
+      --color-text: #F4EDE4;
+      --color-muted: #B39EB5;
+      --color-code: #89DDFF;
+      --sidebar-width: 250px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: ui-monospace, "Cascadia Code", "Segoe UI", Tahoma, Arial, sans-serif;
+      background-color: var(--color-dark);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: var(--color-panel);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-highlight);
+      letter-spacing: -0.5px;
+    }
+
+    .sync-status {
+      font-size: 0.8rem;
+      background: rgba(236, 178, 46, 0.1);
+      border: 1px solid var(--color-highlight);
+      color: var(--color-highlight);
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sync-status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-highlight);
+      display: inline-block;
+      animation: pulse 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    .app-layout {
+      flex: 1;
+      display: flex;
+      min-height: calc(100vh - 105px);
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--color-surface);
+      border-left: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      padding: 1.25rem 1rem;
+      gap: 1.5rem;
+    }
+
+    .sidebar-section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-track {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .step-btn {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-muted);
+      padding: 0.6rem 0.85rem;
+      text-align: right;
+      font-family: inherit;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .step-btn:hover {
+      background-color: rgba(224, 30, 90, 0.1);
+      color: var(--color-text);
+      border-color: var(--color-accent);
+    }
+
+    .step-btn.active {
+      background-color: var(--color-accent);
+      color: #fff;
+      border-color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .step-badge {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .progress-box {
+      margin-top: auto;
+      padding: 0.85rem;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+    }
+
+    .progress-title {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: #110212;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 33.33%;
+      background: var(--color-highlight);
+      transition: width 0.3s ease;
+    }
+
+    .split-content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--color-dark);
+    }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      border-left: 1px solid var(--color-border);
+    }
+
+    .pane:last-child {
+      border-left: none;
+    }
+
+    .pane-header {
+      background: var(--color-panel);
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pane-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pane-title::before {
+      content: "#";
+      color: var(--color-accent);
+      font-weight: bold;
+    }
+
+    .pane-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .lead-description {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--color-muted);
+      background: rgba(74, 21, 75, 0.35);
+      border: 1px solid var(--color-border);
+      border-right: 3px solid var(--color-accent);
+      padding: 0.85rem 1rem;
+      border-radius: 4px;
+    }
+
+    .step-section {
+      display: none;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .step-section.active {
+      display: flex;
+    }
+
+    .field-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: 0.9rem 1.1rem;
+      border-radius: 6px;
+      gap: 1rem;
+    }
+
+    .field-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .field-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .field-hint {
+      font-size: 0.75rem;
+      color: var(--color-muted);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #110212;
+      border: 1px solid var(--color-border);
+      transition: 0.2s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--color-muted);
+      transition: 0.2s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+      background-color: #ffffff;
+    }
+
+    .terminal-view {
+      background: #09010a;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      padding: 1.25rem;
+      font-size: 0.82rem;
+      color: var(--color-code);
+      font-family: inherit;
+      line-height: 1.5;
+      overflow-x: auto;
+      min-height: 220px;
+      flex: 1;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .console-toast {
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      display: none;
+    }
+
+    .console-toast.success {
+      display: block;
+      background: rgba(236, 178, 46, 0.15);
+      border: 1px solid var(--color-highlight);
+      color: var(--color-highlight);
+    }
+
+    .console-toast.error {
+      display: block;
+      background: rgba(224, 30, 90, 0.15);
+      border: 1px solid var(--color-accent);
+      color: #ff85a2;
+    }
+
+    .action-toolbar {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.75rem 1.25rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--color-primary);
+      color: #fff;
+      border: 1px solid var(--color-accent);
+      flex: 2;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-accent);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-highlight);
+      border: 1px solid var(--color-highlight);
+      flex: 1;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(236, 178, 46, 0.1);
+    }
+
+    footer {
+      background: var(--color-panel);
+      border-top: 1px solid var(--color-border);
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .app-layout {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-left: none;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .split-content {
+        grid-template-columns: 1fr;
+      }
+      .pane {
+        border-left: none;
+        border-bottom: 1px solid var(--color-border);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">منصة التكوين التجريبي</div>
+    <div class="sync-status">حالة المزامنة التلقائية: متصل</div>
+  </header>
+
+  <div class="app-layout">
+    <!-- شريط الأدوات الجانبي الثابت -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-section-title">مسار الإعداد المعياري</div>
+        <div class="step-track">
+          <button class="step-btn active" onclick="switchStep(1)">
+            <span>المستوى 1: المحرك</span>
+            <span class="step-badge">مفعل</span>
+          </button>
+          <button class="step-btn" onclick="switchStep(2)">
+            <span>المستوى 2: الشبكة</span>
+            <span class="step-badge">جاهز</span>
+          </button>
+          <button class="step-btn" onclick="switchStep(3)">
+            <span>المستوى 3: التوزيع</span>
+            <span class="step-badge">جاهز</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="progress-box">
+        <div class="progress-title">
+          <span>مؤشر التقدم الإجمالي</span>
+          <span id="progress-val">33%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progress-bar"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- لوحة التحكم المقسمة رأسياً (Split Screen) -->
+    <main class="split-content">
+      <!-- نصف المدخلات والمتغيرات -->
+      <section class="pane">
+        <div class="pane-header">
+          <span class="pane-title">محدد المعلمات والمتغيرات</span>
+        </div>
+        <div class="pane-body">
+          <p class="lead-description">
+            توفر المنصة بيئة عمل مقسمة لإعداد وتخصيص معلمات النظام البرمجية بصورة متزامنة. تتيح لك مساحة العمل ضبط المتغيرات عبر مسار خطوة بخطوة مع شريط أدوات جانبي للتحكم المباشر. يتم تفعيل الخيارات فورياً عبر مفاتيح التبديل المنطقية، مع حفظ تلقائي مستمر للحالة في السجل المحلي دون فقدان للبيانات، مما يسرّع فحص وتدقيق النماذج الأولية بدقة تقنية وموثوقية عالية.
+          </p>
+
+          <!-- الخطوة 1 -->
+          <div id="step-1" class="step-section active">
+            <div class="field-row">
+              <div class="field-info">
+                <span class="field-label">محاذاة النواة البرمجية (Core Engine)</span>
+                <span class="field-hint">مزامنة متزامنة لمعالجة العمليات الأولية</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="param_core_sync" checked onchange="updateParam('core_sync', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="field-row">
+              <div class="field-info">
+                <span class="field-label">ذاكرة التخزين الوسيطة المؤقتة</span>
+                <span class="field-hint">تفريغ وحفظ البيانات المحلية دورياً</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="param_cache_buffering" checked onchange="updateParam('cache_buffering', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- الخطوة 2 -->
+          <div id="step-2" class="step-section">
+            <div class="field-row">
+              <div class="field-info">
+                <span class="field-label">بروتوكول تدفق الحزم (Socket Stream)</span>
+                <span class="field-hint">قنوات اتصال عكسية ثنائية الاتجاه</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="param_socket_stream" onchange="updateParam('socket_stream', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="field-row">
+              <div class="field-info">
+                <span class="field-label">تشفير الترويسات الصادرة</span>
+                <span class="field-hint">تطبيق خوارزمية التعمية التناظرية الفورية</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="param_header_cipher" onchange="updateParam('header_cipher', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- الخطوة 3 -->
+          <div id="step-3" class="step-section">
+            <div class="field-row">
+              <div class="field-info">
+                <span class="field-label">موازنة أحمال الفحص الآلي</span>
+                <span class="field-hint">جدولة المعالجات غير المتزامنة للنظام</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="param_load_balancer" checked onchange="updateParam('load_balancer', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="field-row">
+              <div class="field-info">
+                <span class="field-label">حصر استهلاك الموارد التشغيلية</span>
+                <span class="field-hint">إيقاف التوسع في حال تجاوز العتبة المعيارية</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="param_resource_guard" onchange="updateParam('resource_guard', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="action-toolbar">
+            <button class="btn btn-primary" onclick="commitSync()">تنفيذ ومزامنة الإعدادات</button>
+            <button class="btn btn-secondary" onclick="exportConfig()">تصدير حزمة التكوين</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- نصف المعاينة البرمجية المباشرة -->
+      <section class="pane">
+        <div class="pane-header">
+          <span class="pane-title">سجل المعاينة البرمجية الفورية</span>
+        </div>
+        <div class="pane-body">
+          <div id="toast-message" class="console-toast"></div>
+          <div id="terminal-output" class="terminal-view"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>بيئة تشغيل ثابتة • الإصدار التقني 1.0.4 • الحفظ الآلي مفعّل</footer>
+
+  <script>
+    const STORAGE_KEY = 'sys_config_runtime_state';
+
+    const defaultState = {
+      currentStep: 1,
+      params: {
+        core_sync: true,
+        cache_buffering: true,
+        socket_stream: false,
+        header_cipher: false,
+        load_balancer: true,
+        resource_guard: false
+      }
+    };
+
+    let appState = { ...defaultState };
+
+    function loadState() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          appState = JSON.parse(stored);
+        }
+      } catch (e) {
+        showToast('error', 'خطأ في تكوين المدخلات البرمجية، راجع السجلات.');
+      }
+      syncInputs();
+      switchStep(appState.currentStep || 1);
+      renderTerminal();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        showToast('success', 'تم حفظ الحالة وتحديث المخرجات بنجاح.');
+      } catch (e) {
+        showToast('error', 'خطأ في تكوين المدخلات البرمجية، راجع السجلات.');
+      }
+    }
+
+    function syncInputs() {
+      Object.keys(appState.params).forEach(key => {
+        const input = document.getElementById('param_' + key);
+        if (input) {
+          input.checked = !!appState.params[key];
+        }
+      });
+    }
+
+    function updateParam(key, val) {
+      appState.params[key] = val;
+      saveState();
+      renderTerminal();
+    }
+
+    function switchStep(stepIndex) {
+      appState.currentStep = stepIndex;
+      const buttons = document.querySelectorAll('.step-btn');
+      buttons.forEach((btn, idx) => {
+        if (idx + 1 === stepIndex) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      for (let i = 1; i <= 3; i++) {
+        const section = document.getElementById('step-' + i);
+        if (section) {
+          if (i === stepIndex) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        }
+      }
+
+      const percent = Math.round((stepIndex / 3) * 100);
+      document.getElementById('progress-bar').style.width = percent + '%';
+      document.getElementById('progress-val').innerText = percent + '%';
+      saveState();
+    }
+
+    function renderTerminal() {
+      const activeCount = Object.values(appState.params).filter(Boolean).length;
+      const term = document.getElementById('terminal-output');
+
+      if (activeCount === 0) {
+        term.textContent = '// لا توجد معلمات نشطة في مساحة العمل الحالية.\n{\n  "runtime_parameters": {}\n}';
+        return;
+      }
+
+      const formatted = {
+        meta: {
+          runtime: "Production-Sandbox",
+          version: "1.0.4",
+          step: appState.currentStep,
+          active_flags: activeCount,
+          last_update: new Date().toISOString()
+        },
+        runtime_parameters: appState.params
+      };
+
+      term.textContent = JSON.stringify(formatted, null, 2);
+    }
+
+    function showToast(type, msg) {
+      const toast = document.getElementById('toast-message');
+      toast.className = 'console-toast ' + type;
+      toast.textContent = msg;
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.className = 'console-toast';
+      }, 3500);
+    }
+
+    function commitSync() {
+      saveState();
+      renderTerminal();
+      showToast('success', 'تم حفظ الحالة وتحديث المخرجات بنجاح.');
+    }
+
+    function exportConfig() {
+      try {
+        const jsonStr = JSON.stringify(appState, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'runtime-configuration.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('success', 'تم حفظ الحالة وتحديث المخرجات بنجاح.');
+      } catch (e) {
+        showToast('error', 'خطأ في تكوين المدخلات البرمجية، راجع السجلات.');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadState);
+  </script>
+</body>
+</html>

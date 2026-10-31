@@ -1,0 +1,9 @@
+{
+  "score": 8.5,
+  "issues": [],
+  "suggestions": [
+    "التأكد من دعم الشاشات الصغيرة (Responsive Breakpoint) لتحويل الشاشة المقسمة (Split Screen) إلى عمود رأسي متتابع عند العرض على الهواتف المحمولة."
+  ],
+  "verdict": "approved",
+  "source": "heuristic+llm"
+}
