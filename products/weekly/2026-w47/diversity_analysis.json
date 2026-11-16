@@ -1,0 +1,18 @@
+{
+  "diversity_score": 57.6,
+  "components": {
+    "color": 70.8,
+    "structure": 42.5,
+    "text": 73.0,
+    "type": 37.5
+  },
+  "history_compared": 8,
+  "new_colors_sample": [
+    "#f0f4f8",
+    "#1a202c",
+    "#fff",
+    "#2b6cb0",
+    "#718096"
+  ],
+  "type_repeats_in_window": 5
+}
